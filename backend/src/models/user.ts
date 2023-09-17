@@ -34,16 +34,12 @@ User.init(
 
 (async () => {
   try {
-    // Check if the "Issues" table exists
     const tableExists = await sequelize.getQueryInterface().showAllTables();
-    if (!tableExists.includes("issues")) {
-      // Create the "Issues" table if it doesn't exist
+    if (!tableExists.includes("user")) {
       await User.sync();
-      console.log("Issues table created successfully.");
+      console.log("user table created successfully.");
     }
-
-    // Perform other operations on the "Issues" table here
   } catch (error) {
-    console.error("Error creating or accessing Issues table:", error);
+    console.error("Error creating or accessing user table:", error);
   }
 })();

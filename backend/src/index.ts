@@ -3,14 +3,16 @@ import bcrypt from "bcrypt";
 import { Secret } from "jsonwebtoken";
 import { User } from "./models/user";
 import { EmployeeRoutes, DepartmentRoutes, IssueRoutes } from "./routes";
+import jwt from "jsonwebtoken";
 
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
 
-import jwt from "jsonwebtoken";
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(express.static("public"));
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -57,6 +59,7 @@ app.use("/api/employee", new EmployeeRoutes().getRouter());
 app.use("/api/department", new DepartmentRoutes().getRouter());
 app.use("/api/issues", new IssueRoutes().getRouter());
 
-app.listen(3001, () => {
-  console.log("App listening on port http://localhost:2020");
+const port = 8087;
+app.listen(port, () => {
+  console.log(`App listening on port http://localhost:${port}`);
 });

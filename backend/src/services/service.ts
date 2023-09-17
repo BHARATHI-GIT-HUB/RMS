@@ -1,4 +1,5 @@
 import { FindOptions, Model } from "sequelize";
+import { Request } from "express";
 
 type Constructor<T> = new (...args: any[]) => T;
 
@@ -6,6 +7,10 @@ type ModelType<T extends Model<T>> = Constructor<T> & typeof Model;
 
 interface CustomRequest extends Request {
   user?: any; // Modify the type of 'user' according to your decoded token data
+}
+
+export interface MulterRequest extends Request {
+  file: any;
 }
 
 export abstract class IRepository<T extends Model> {

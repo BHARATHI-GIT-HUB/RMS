@@ -46,8 +46,9 @@ Issue.init(
       },
     },
     status: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.JSON, // Use ARRAY data type for an array of JSON objects
+      allowNull: true,
+      // defaultValue: [], // Optional: Set a default value as an empty array
     },
   },
   {

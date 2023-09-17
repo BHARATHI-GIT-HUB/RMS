@@ -54,6 +54,7 @@ export class DepartmentController {
     try {
       const currentDepartmentId = req.user?.userId;
 
+      console.log(currentDepartmentId, ":id");
       const issues = await Issue.findAll({
         where: {
           departmentId: currentDepartmentId,
