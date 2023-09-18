@@ -24,13 +24,13 @@ const { Option } = Select;
 
 const queryClient = new QueryClient();
 
-export default function App() {
+export const IssueForm = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Register />
     </QueryClientProvider>
   );
-}
+};
 
 const formItemLayout = {
   labelCol: {

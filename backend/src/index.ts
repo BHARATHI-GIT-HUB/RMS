@@ -59,7 +59,7 @@ app.use("/api/employee", new EmployeeRoutes().getRouter());
 app.use("/api/department", new DepartmentRoutes().getRouter());
 app.use("/api/issues", new IssueRoutes().getRouter());
 
-const port = 8087;
+const port = 8086;
 app.listen(port, () => {
   console.log(`App listening on port http://localhost:${port}`);
 });

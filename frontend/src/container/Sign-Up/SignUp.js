@@ -12,6 +12,7 @@ import {
   Space,
 } from "antd";
 import React, { useState } from "react";
+import { useRegister } from "../../hooks/useRegister";
 
 const formItemLayout = {
   labelCol: {
@@ -42,46 +43,49 @@ const tailFormItemLayout = {
   },
 };
 
-const Register = () => {
+export const Register = () => {
   const [form] = Form.useForm();
   const [showdepartement, setshowdepartement] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const { register, isLoading, error } = useRegister();
 
   const onFinish = async (values) => {
-    console.log("Received values of form: ", values);
-    const name = values.nickname;
-    const password = values.password;
-    const email = values.email;
-    const role = !showdepartement ? values.designation : values.department_name;
+    // console.log("Received values of form: ", values, showdepartement);
+    await register(values, showdepartement);
 
-    const response = await fetch("http://localhost:3005/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-        role,
-      }),
-    });
+    // const name = values.nickname;
+    // const password = values.password;
+    // const email = values.email;
+    // const role = !showdepartement ? values.designation : values.department_name;
+    // console.log(role);
 
-    const data = await response.json();
-    console.log(data);
+    // const response = await fetch("http://localhost:3005/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     name,
+    //     email,
+    //     password,
+    //     role,
+    //   }),
+    // });
 
-    if (data.employee) {
-      localStorage.setItem("token", data.token);
-      console.log(data.employee);
+    // const data = await response.json();
+    // console.log(data);
 
-      if (data.employee.role === "ADMIN" || data.employee.role === "EMPLOYEE") {
-        window.location.href = "/employee";
-      } else if (data.employee.role === "DEPARTMENT") {
-        window.location.href = "/department";
-      }
-    } else {
-      setErrorMessage("Check username and password");
-    }
+    // if (data.employee) {
+    //   localStorage.setItem("token", data.token);
+    //   console.log(data.employee);
+
+    //   if (data.employee.role === "ADMIN" || data.employee.role === "EMPLOYEE") {
+    //     window.location.href = "/employee";
+    //   } else if (data.employee.role === "DEPARTMENT") {
+    //     window.location.href = "/department";
+    //   }
+    // } else {
+    //   setErrorMessage("Check username and password");
+    // }
   };
 
   const handleChange = (value) => {
@@ -251,4 +255,3 @@ const Register = () => {
     </div>
   );
 };
-export default Register;

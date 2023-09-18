@@ -17,7 +17,7 @@ export class DepartmentRoutes {
     // Get all departments
     this.router.get(
       "/",
-      (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
+      // (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
       (req: Request, res: Response) => this.controller.getAll(req, res)
     );
 

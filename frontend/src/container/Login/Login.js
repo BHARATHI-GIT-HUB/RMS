@@ -1,53 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Space, Alert } from "antd";
+import { Button, Checkbox, Form, Input, Space, Alert, Spin } from "antd";
+import { useLogin } from "../../hooks/useLogin";
 
-const Login = () => {
-  const [errorMessage, setErrorMessage] = useState(null);
-
+export const Login = () => {
+  const { login, isloading, error } = useLogin();
   const onFinish = async (values) => {
-    const username = values.username;
-    const password = values.password;
-
-    const response = await fetch("http://localhost:8087/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
-
-    const data = await response.json();
-    console.log(data);
-
-    if (data.employee) {
-      localStorage.setItem("token", data.token);
-
-      if (data.employee.role === "EMPLOYEE") {
-        window.location.href = "/employee";
-      } else if (data.employee.role === "ADMIN") {
-        window.location.href = "/department";
-      }
-
-      // if (data.employee.role === "ADMIN" || data.employee.role === "EMPLOYEE") {
-      //   window.location.href = "/employee";
-      // } else if (data.employee.role === "DEPARTMENT") {
-      //   window.location.href = "/department";
-      // }
-    } else {
-      setErrorMessage("Check username and password");
-    }
+    await login(values);
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      {errorMessage && (
+      {isloading && <Spin size="large" />}
+      {error && (
         <Alert
           message="Warning"
-          description="This is a warning notice about copywriting."
+          description={error}
           type="warning"
           showIcon
           closable
@@ -111,5 +79,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;

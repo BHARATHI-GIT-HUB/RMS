@@ -10,15 +10,15 @@ import { SmileOutlined } from "@ant-design/icons";
 
 const queryClient = new QueryClient();
 
-export default function App() {
+export const TimeLine = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <TimeLine />
+      <Status />
     </QueryClientProvider>
   );
-}
+};
 
-const TimeLine = () => {
+const Status = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["repoData"],
     queryFn: () =>
