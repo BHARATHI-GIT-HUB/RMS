@@ -4,10 +4,10 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
-import Update from "../../pages/register.js";
+// import Update from "../../pages/register.js";
 import { Avatar, Card, Skeleton, Switch } from "antd";
 const { Meta } = Card;
-const App = () => {
+export const ProfileCard = () => {
   const [loading, setLoading] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
 
@@ -21,7 +21,8 @@ const App = () => {
     <div className="grid grid-flow-col justify-evenly ">
       {/* <Switch checked={!loading} onChange={onChange} /> */}
       {isEditVisible ? (
-        <Update />
+        // <Update />
+        <></>
       ) : (
         <>
           <Card
@@ -70,4 +71,3 @@ const App = () => {
     </div>
   );
 };
-export default App;

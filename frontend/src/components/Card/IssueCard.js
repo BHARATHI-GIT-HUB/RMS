@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card } from "antd";
 import { Button, Dropdown } from "antd";
-import Details from "../details";
+// import Details from "../details";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -10,22 +10,29 @@ import axios from "axios";
 
 const { Meta } = Card;
 
-const IssuesCard = ({ id, name, description, place, currstatus, photoUrl }) => {
-  const queryClient = useQueryClient();
+export const IssueCard = ({
+  id,
+  name,
+  description,
+  place,
+  currstatus,
+  photoUrl,
+}) => {
+  // const queryClient = useQueryClient();
 
-  const updateIssueMutation = useMutation(
-    (updatedData) => {
-      return axios.put(`http://localhost:8087/api/issues/${id}`, updatedData);
-    },
-    {
-      onSuccess: () => {
-        console.log("updated");
-      },
-      onError: (err) => {
-        console.log(err);
-      },
-    }
-  );
+  // const updateIssueMutation = useMutation(
+  //   (updatedData) => {
+  //     return axios.put(`http://localhost:8087/api/issues/${id}`, updatedData);
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       console.log("updated");
+  //     },
+  //     onError: (err) => {
+  //       console.log(err);
+  //     },
+  //   }
+  // );
 
   const items = [
     {
@@ -49,7 +56,7 @@ const IssuesCard = ({ id, name, description, place, currstatus, photoUrl }) => {
                 },
               ],
             };
-            updateIssueMutation.mutate(data);
+            // updateIssueMutation.mutate(data);
           }}
         >
           Approvaed
@@ -77,7 +84,7 @@ const IssuesCard = ({ id, name, description, place, currstatus, photoUrl }) => {
                 },
               ],
             };
-            updateIssueMutation.mutate(data);
+            // updateIssueMutation.mutate(data);
           }}
         >
           Not Approvaed
@@ -113,4 +120,3 @@ const IssuesCard = ({ id, name, description, place, currstatus, photoUrl }) => {
     </Card>
   );
 };
-export default IssuesCard;

@@ -8,7 +8,7 @@ export const useLogin = () => {
     const username = data.username;
     const password = data.password;
     setIsLoading(true);
-    const response = await fetch("http://localhost:8087/login", {
+    const response = await fetch("http://localhost:8086/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,6 +26,7 @@ export const useLogin = () => {
     }
     if (response.ok) {
       localStorage.setItem("token", json.token);
+      console.log(json);
       if (json.employee.role === "EMPLOYEE") {
         window.location.href = "/employee";
       } else if (json.employee.role === "ADMIN") {

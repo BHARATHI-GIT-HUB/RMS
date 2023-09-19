@@ -1,10 +1,11 @@
 import logo from "./logo.svg";
 import "./App.css";
-
+import React from "react";
 import { Login } from "./container/Login";
 import { Register } from "./container/Sign-Up";
-import Nav from "./components/NavBar";
-import Employee from "./container/Employee";
+import { EmployeeLayout } from "./container/Layout";
+import { DepartmentLayout } from "./container/Layout";
+import { Status } from "./components/DropDown";
 // import Employee from "./components/Layout/layout.main";
 // import Department from "./components/Layout/layout.department";
 // import Register from "./pages/register";
@@ -15,22 +16,16 @@ import Employee from "./container/Employee";
 
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { TimeLine } from "./components/TimLine";
+import { LayoutBar } from "./components/layout";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/employee" element={<Nav />}>
-          <Employee />
-        </Route>
-        {/* <Route path="/employee" element={<Employee />} /> */}
-
-        {/* <Route path="/employee" element={<Employee />} />
-        <Route path="/department" element={<Department />} />
-        <Route path="/timeline" element={<TimeLine />} />
-      <Route path="/details" element={<Details />} /> */}
+        <Route path="/register" element={<Register />} />{" "}
+        <Route path="/employee" element={<EmployeeLayout />} />
+        <Route path="/department" element={<DepartmentLayout />} />
       </Routes>
     </BrowserRouter>
   );

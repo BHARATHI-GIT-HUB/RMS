@@ -4,6 +4,9 @@ import { MenuItem, Content } from "./MenuItem";
 import { IssueForm } from "../../components/Form";
 
 const Index = () => {
-  return <IssueForm />;
+  return;
+  <React.Fragment>
+    <IssueForm />
+  </React.Fragment>;
 };
 export default Index;

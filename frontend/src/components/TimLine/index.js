@@ -1,6 +1,7 @@
 import React from "react";
+import Loading from "../../components/Loading";
 import { ClockCircleOutlined } from "@ant-design/icons";
-import { Timeline } from "antd";
+import { Timeline, Spin, Space } from "antd";
 import {
   QueryClient,
   QueryClientProvider,
@@ -22,10 +23,10 @@ const Status = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["repoData"],
     queryFn: () =>
-      fetch("http://localhost:8087/api/issues/4").then((res) => res.json()),
+      fetch("http://localhost:8086/api/issues/1").then((res) => res.json()),
   });
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <Loading />;
 
   if (error) return "An error has occurred: " + error.message;
 

@@ -27,13 +27,13 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({ where: { username: username } });
 
     if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({ error: "Invalid UserName" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({ error: "Invalid password" });
     }
 
     const token = jwt.sign(
@@ -59,7 +59,7 @@ app.use("/api/employee", new EmployeeRoutes().getRouter());
 app.use("/api/department", new DepartmentRoutes().getRouter());
 app.use("/api/issues", new IssueRoutes().getRouter());
 
-const port = 8086;
+const port = 8087;
 app.listen(port, () => {
   console.log(`App listening on port http://localhost:${port}`);
 });
