@@ -2,7 +2,12 @@ import express from "express";
 import bcrypt from "bcrypt";
 import { Secret } from "jsonwebtoken";
 import { User } from "./models/user";
-import { EmployeeRoutes, DepartmentRoutes, IssueRoutes } from "./routes";
+import {
+  EmployeeRoutes,
+  DepartmentRoutes,
+  IssueRoutes,
+  UserRoutes,
+} from "./routes";
 import jwt from "jsonwebtoken";
 
 const cors = require("cors");
@@ -48,7 +53,7 @@ app.post("/login", async (req, res) => {
       role: user.role,
     };
 
-    res.status(200).json({ token: token, employee: userData });
+    res.status(200).json({ token: token, userData: userData });
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ error: "Failed to log in" });
@@ -58,6 +63,7 @@ app.post("/login", async (req, res) => {
 app.use("/api/employee", new EmployeeRoutes().getRouter());
 app.use("/api/department", new DepartmentRoutes().getRouter());
 app.use("/api/issues", new IssueRoutes().getRouter());
+app.use("/api/user", new UserRoutes().getRouter());
 
 const port = 8087;
 app.listen(port, () => {

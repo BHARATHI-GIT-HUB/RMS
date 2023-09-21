@@ -23,7 +23,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />{" "}
+        <Route path="/register" element={<Register />} />
         <Route path="/employee" element={<EmployeeLayout />} />
         <Route path="/department" element={<DepartmentLayout />} />
       </Routes>

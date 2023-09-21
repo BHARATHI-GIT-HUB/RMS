@@ -23,7 +23,7 @@ export class DepartmentRoutes {
 
     this.router.get(
       "/departmentissues/",
-      (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
+      // (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
       (req: Request, res: Response) =>
         this.controller.getIssuesByCurrentDepartmentId(req, res)
     );

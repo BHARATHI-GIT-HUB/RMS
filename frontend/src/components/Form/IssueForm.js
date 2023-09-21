@@ -11,7 +11,7 @@ import {
   Select,
   Upload,
 } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   useMutation,
@@ -20,17 +20,8 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import axios from "axios";
-const { Option } = Select;
-
-const queryClient = new QueryClient();
-
-export const IssueForm = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Register />
-    </QueryClientProvider>
-  );
-};
+import { usePost } from "../../hooks/usePost";
+import { useGet } from "../../hooks/useGet";
 
 const formItemLayout = {
   labelCol: {
@@ -67,38 +58,37 @@ const normFile = (e) => {
   if (Array.isArray(e)) {
     return e;
   }
-  // Ant Design's Upload component stores file information in 'file' property
+
   if (e && e.fileList) {
     return e.fileList;
   }
   return e;
 };
 
-const Register = () => {
+export const IssueForm = () => {
   const [form] = Form.useForm();
+  const { postDataIssue, response, isloading, error } = usePost();
 
-  const postData = useMutation(
-    (data) => {
-      return axios.post(`http://localhost:8086/api/issues/`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-    },
-    {
-      onSuccess: () => {
-        console.log("posted");
-      },
-      onError: (err) => {
-        console.log(err);
-      },
-    }
-  );
-  const onFinish = (values) => {
-    postData.mutate(values);
+  const {
+    getData,
+    data: departmentData,
+    isLoading: isDepartmentLoading,
+    error: departmentError,
+  } = useGet();
+
+  const onFinish = async (values) => {
+    const user = localStorage.getItem("user");
+    const data = JSON.parse(user);
+    values.employeeId = data.id;
+    // console.log(values);
+    await postDataIssue("http://localhost:8087/api/issues/", values);
   };
 
-  const [autoCompleteResult, setAutoCompleteResult] = useState([]);
+  useEffect(() => {
+    getData("http://localhost:8087/api/department");
+  }, []);
+
+  // const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
   return (
     <Form
@@ -124,7 +114,13 @@ const Register = () => {
           },
         ]}
       >
-        <Input />
+        <AutoComplete
+          //   options={websiteOptions}
+          //   onChange={onDesignationChange}
+          placeholder="Title"
+        >
+          <Input />
+        </AutoComplete>
       </Form.Item>
 
       <Form.Item
@@ -185,23 +181,22 @@ const Register = () => {
         </Upload>
       </Form.Item>
 
-      <Form.Item label="Your Name" name="name">
-        <Select>
-          <Select.Option value="sri">Demo</Select.Option>
-          <Select.Option value="kamal">Demo</Select.Option>
-        </Select>
-      </Form.Item>
-
-      <Form.Item label="Department" name="department">
-        <Select>
-          <Select.Option value="electrical">Electrical</Select.Option>
-          <Select.Option value="carpentery">Carpentery</Select.Option>
-        </Select>
+      <Form.Item label="Department" name="departmentId">
+        <Select
+          // !!fuck what they say
+          options={
+            departmentData &&
+            departmentData.map((value) => ({
+              value: value.userId,
+              label: value.department_name,
+            }))
+          }
+        ></Select>
       </Form.Item>
 
       <Form.Item label="Status" name="status">
         <Select>
-          <Select.Option value="demo">Demo</Select.Option>
+          <Select.Option value="Create Issue" />
         </Select>
       </Form.Item>
 

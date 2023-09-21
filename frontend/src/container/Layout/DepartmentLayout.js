@@ -1,39 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DepartmentMenu } from "../../components/Menu";
 import { IssueCard } from "../../components/Card";
 import { EmployeeProfile } from "../../components/Profile";
 import { TimeLine } from "../../components/TimLine";
 import { Nav } from "../../components/NavBar";
 import { Layout, Menu, Button, theme } from "antd";
+import { useGet } from "../../hooks/useGet";
+import { useAuth } from "../../hooks/useAuth";
 
 const { Header, Sider, Content } = Layout;
 export function DepartmentLayout() {
-  const post = [
-    {
-      id: "1",
-      name: "sample",
-      description: "sample",
-      place: "",
-      currstatus: "",
-      photoUrl: "",
-    },
-    {
-      id: "1",
-      name: "sample",
-      description: "sample",
-      place: "",
-      currstatus: "",
-      photoUrl: "",
-    },
-    {
-      id: "1",
-      name: "sample",
-      description: "sample",
-      place: "",
-      currstatus: "",
-      photoUrl: "",
-    },
-  ];
+  const { getData, data, isloading, error } = useGet();
+  const { isAuth, isLoading } = useAuth();
+
   const IssueCards = ({ post }) => {
     console.log(post, "post");
     return (
@@ -54,7 +33,7 @@ export function DepartmentLayout() {
     );
   };
   const components = {
-    1: <IssueCards post={post} />,
+    1: <IssueCards post={data} />,
     2: <EmployeeProfile />,
     // 3: <TimeLine />,
   };
@@ -64,9 +43,19 @@ export function DepartmentLayout() {
     updateRender(menu.key);
   };
 
+  useEffect(async () => {
+    await isAuth("ADMIN");
+    const user = localStorage.getItem("user");
+    const data = JSON.parse(user);
+    console.log(data);
+    await getData(
+      `http://localhost:8087/api/department/departmentissues/?id=${data.id}`
+    );
+  }, []);
+
   return (
     <Nav menu={<DepartmentMenu handleClick={handleMenuClick} />}>
-      <Content>{components[render]}</Content>;
+      <Content>{components[render]}</Content>
     </Nav>
   );
 }

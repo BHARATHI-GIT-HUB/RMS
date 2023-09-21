@@ -17,8 +17,8 @@ export class EmployeeRoutes {
     // Get all employees
     this.router.get(
       "/",
-      (req, res, next) =>
-        verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
+      // (req, res, next) =>
+      // verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
       (req: Request, res: Response) => this.controller.getAll(req, res)
     );
 
@@ -30,8 +30,8 @@ export class EmployeeRoutes {
     // Get an employee by ID
     this.router.get(
       "/:id",
-      (req, res, next) =>
-        verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
+      // (req, res, next) =>
+      // verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
       (req: Request, res: Response) => this.controller.getById(req, res)
     );
 

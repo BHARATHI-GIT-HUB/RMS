@@ -7,10 +7,6 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
 
-// import { IssueForm } from "../Form/Issues.js";
-// import UserProfile from "../Card/profile.js";
-// import TimeLine from "../TimeLine/timeline.js";
-
 const { Header, Sider, Content } = Layout;
 
 export const Nav = ({ children, menu }) => {
