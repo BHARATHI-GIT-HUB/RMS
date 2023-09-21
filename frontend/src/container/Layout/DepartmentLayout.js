@@ -7,11 +7,13 @@ import { Nav } from "../../components/NavBar";
 import { Layout, Menu, Button, theme } from "antd";
 import { useGet } from "../../hooks/useGet";
 import { useAuth } from "../../hooks/useAuth";
+import Loading from "../../components/Loading";
 
 const { Header, Sider, Content } = Layout;
 export function DepartmentLayout() {
   const { getData, data, isloading, error } = useGet();
   const { isAuth, isLoading } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const IssueCards = ({ post }) => {
     console.log(post, "post");
@@ -35,7 +37,6 @@ export function DepartmentLayout() {
   const components = {
     1: <IssueCards post={data} />,
     2: <EmployeeProfile />,
-    // 3: <TimeLine />,
   };
   const [render, updateRender] = useState(1);
 
@@ -47,15 +48,23 @@ export function DepartmentLayout() {
     await isAuth("ADMIN");
     const user = localStorage.getItem("user");
     const data = JSON.parse(user);
-    console.log(data);
+    if (user) {
+      setIsLoggedIn(true);
+    }
     await getData(
       `http://localhost:8087/api/department/departmentissues/?id=${data.id}`
     );
   }, []);
 
   return (
-    <Nav menu={<DepartmentMenu handleClick={handleMenuClick} />}>
-      <Content>{components[render]}</Content>
-    </Nav>
+    <>
+      {isLoggedIn ? (
+        <Nav menu={<DepartmentMenu handleClick={handleMenuClick} />}>
+          <Content>{components[render]}</Content>
+        </Nav>
+      ) : (
+        <Loading />
+      )}
+    </>
   );
 }
