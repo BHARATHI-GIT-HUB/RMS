@@ -1,56 +1,95 @@
+// import React, { useState } from "react";
+// import {
+//   DownOutlined,
+//   SmileOutlined,
+//   CheckSquareFilled,
+//   InfoCircleFilled,
+//   IssuesCloseOutlined,
+// } from "@ant-design/icons";
+// import { Dropdown, Space } from "antd";
+// import { useDropDown } from "../../hooks/useDropDown";
+
+// export const Status = () => {
+//   // const [menuId, setMenuID] = useState();
+//   const { dropDown, isLoading, error } = useDropDown();
+
+//   // const handleChange = (e) => {
+//   //   e.preventDefault();
+//   // };
+
+//   return (
+//     <React.Fragment className="flex justify-center items-center h-screen">
+//       <Dropdown
+//       // menu={{
+//       //   status,
+//       // }}
+//       >
+//         <a onClick={(e) => {}}>
+//           <Space>
+//             Update Status
+//             <DownOutlined />
+//           </Space>
+//         </a>
+//       </Dropdown>
+//     </React.Fragment>
+//   );
+// };
+
 import React, { useState } from "react";
-import {
-  DownOutlined,
-  SmileOutlined,
-  CheckSquareFilled,
-  InfoCircleFilled,
-  IssuesCloseOutlined,
-} from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
-import { useDropDown } from "../../hooks/useDropDown";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Dropdown, message, Space, Tooltip } from "antd";
 
 export const Status = () => {
-  const [menuId, setMenuID] = useState();
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  const status = [
+  const handleMenuClick = (item) => {
+    message.info(`Selected: ${items[item.key - 1].label}`);
+    setSelectedItem(items[item.key - 1].label);
+  };
+
+  const items = [
     {
-      color: "green",
-      children: "Approved Issue at 9/16/2023 at 17:29:50",
+      label: "1st menu item",
+      key: "1",
+      icon: <UserOutlined />,
     },
     {
-      color: "orange",
-      children: "Estimated Arrival for service at 9/16/2023 at 17:29:50",
+      label: "2nd menu item",
+      key: "2",
+      icon: <UserOutlined />,
     },
     {
-      color: "green",
-      children: "Closed Issues at 9/16/2023 at 17:29:50",
+      label: "3rd menu item",
+      key: "3",
+      icon: <UserOutlined />,
+      danger: true,
+    },
+    {
+      label: "4rd menu item",
+      key: "4",
+      icon: <UserOutlined />,
+      danger: true,
+      disabled: true,
     },
   ];
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    const { dropDown, isLoading, error } = useDropDown();
-    console.log(menuId, status[menuId]);
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
   };
 
   return (
-    <React.Fragment className="flex justify-center items-center h-screen">
-      <Dropdown
-        menu={{
-          items,
-        }}
-      >
-        <a
-          onClick={(e) => {
-            handleChange;
-          }}
-        >
+    <Space wrap>
+      <Dropdown menu={menuProps}>
+        <Button>
           <Space>
-            Update Status
+            {selectedItem ? selectedItem : "Select an item"}
             <DownOutlined />
           </Space>
-        </a>
+        </Button>
       </Dropdown>
-    </React.Fragment>
+    </Space>
   );
 };
+
+export default Status;

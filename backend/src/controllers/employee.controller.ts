@@ -67,7 +67,7 @@ export class EmployeeController {
       res.status(500).json({ error: "Failed to retrieve employee" });
     }
   }
-  
+
   async create(req: Request, res: Response) {
     try {
       const { name, email, password, designation } = req.body;

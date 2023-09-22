@@ -22,6 +22,7 @@ import {
 import axios from "axios";
 import { usePost } from "../../hooks/usePost";
 import { useGet } from "../../hooks/useGet";
+import { Primary } from "../Button/Primary";
 
 const formItemLayout = {
   labelCol: {
@@ -96,10 +97,8 @@ export const IssueForm = () => {
       form={form}
       name="register"
       onFinish={onFinish}
-      style={{
-        maxWidth: 600,
-      }}
       scrollToFirstError
+      className="max-w-[600px] flex flex-col"
     >
       <Form.Item
         name="title"
@@ -200,13 +199,8 @@ export const IssueForm = () => {
         </Select>
       </Form.Item>
 
-      <Form.Item
-        {...tailFormItemLayout}
-        className="flex justify-start items-start"
-      >
-        <Button htmlType="submit" className="w-[250px]">
-          Register
-        </Button>
+      <Form.Item {...tailFormItemLayout} className="self-center">
+        <Primary text="Register" />
       </Form.Item>
     </Form>
   );

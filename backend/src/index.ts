@@ -24,6 +24,10 @@ app.use(express.urlencoded({ extended: true }));
 const secretKey: Secret = process.env.SECRET_KEY || "";
 const expiresIn = "1h";
 
+app.get("/test", async (req, res) => {
+  res.status(200).json("Server is woeking");
+});
+
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   console.log(username, password);

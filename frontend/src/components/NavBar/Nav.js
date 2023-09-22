@@ -51,7 +51,12 @@ export const Nav = ({ children, menu }) => {
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
           }}
+          // className="mx-[24px] my-[16px] p-[24px] min-h-[280px]"
         >
           {children}
         </Content>
