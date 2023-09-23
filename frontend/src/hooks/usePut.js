@@ -9,16 +9,13 @@ export const usePut = () => {
     console.log(path, body);
 
     setIsLoading(true);
-    x;
 
     const response = await fetch(path, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-
-      //   body: JSON.stringify(body),
-      body: J,
+      body: JSON.stringify(body),
     });
 
     const json = await response.json();
@@ -28,9 +25,9 @@ export const usePut = () => {
     }
     if (response.ok) {
       //   localStorage.setItem("token", json.token);
-      console.log(json);
+      console.log(json, "onput");
       // setResponse(json)
     }
   };
-  return { postData, postDataIssue, response, isLoading, error };
+  return { putData, response, isLoading, error };
 };

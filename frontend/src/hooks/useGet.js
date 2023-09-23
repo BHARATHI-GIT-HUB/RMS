@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useGet = () => {
   const [error, setError] = useState(null);
@@ -23,8 +23,9 @@ export const useGet = () => {
     }
     if (response.ok) {
       localStorage.setItem("token", json.token);
-      setData(json);
+      setData((prevData) => [...prevData, json]);
     }
   };
+
   return { getData, data, isLoading, error };
 };
