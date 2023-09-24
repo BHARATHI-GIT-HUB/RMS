@@ -36,3 +36,10 @@ code {
   display: flex;
   justify-content: end;
 }
+:where(.css-dev-only-do-not-override-txh9fw).ant-btn-primary {
+  background-color: #1677ff !important;
+}
+
+:where(.css-dev-only-do-not-override-txh9fw).ant-timeline .ant-timeline-item {
+  padding-bottom: 45px !important;
+}

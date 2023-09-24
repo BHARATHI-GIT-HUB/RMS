@@ -14,12 +14,14 @@ const { Header, Sider, Content } = Layout;
 export function EmployeeLayout() {
   const { getData, data, isloading, error } = useGet();
   const { isAuth, isLoading } = useAuth();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [currData, setCurrData] = useState();
 
   const components = {
     1: <IssueForm />,
     2: <EmployeeProfile />,
-    3: <TimeLine status={data.status} />,
+    3: data && data.length > 0 && <TimeLine status={data[0].status} />,
   };
   const [render, updateRender] = useState(1);
 
@@ -27,16 +29,31 @@ export function EmployeeLayout() {
     updateRender(menu.key);
   };
 
-  useEffect(async () => {
-    await isAuth("EMPLOYEE");
-    await getData("http://localhost:8087/api/issues/1");
-    if (localStorage.getItem("token")) {
-      setIsLoggedIn(true);
+  // useEffect(async () => {
+  //   await isAuth("EMPLOYEE");
+  //   await getData("http://localhost:8087/api/issues/1");
+  //   if (localStorage.getItem("token")) {
+  //     setIsLoggedIn(true);
+  //   }
+  //   return () => {
+  //     console.log("got data");
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    async function fetch() {
+      await isAuth("EMPLOYEE");
+      await getData("http://localhost:8087/api/issues/3");
     }
-    return () => {
-      console.log("got data");
-    };
+    fetch();
   }, []);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      // setIsLoggedIn(true);
+      console.log(data[0].status, "in emp");
+    }
+  }, [data]);
 
   if (isLoading) {
     return <p>loading</p>;

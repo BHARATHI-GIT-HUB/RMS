@@ -23,7 +23,9 @@ export const useGet = () => {
     }
     if (response.ok) {
       localStorage.setItem("token", json.token);
+      console.log(json, "json");
       setData((prevData) => [...prevData, json]);
+      console.log(data, "data");
     }
   };
 

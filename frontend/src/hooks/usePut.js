@@ -26,6 +26,7 @@ export const usePut = () => {
     if (response.ok) {
       //   localStorage.setItem("token", json.token);
       console.log(json, "onput");
+      setResponse(json);
       // setResponse(json)
     }
   };

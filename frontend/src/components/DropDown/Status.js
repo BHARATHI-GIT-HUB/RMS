@@ -1,50 +1,24 @@
-// import React, { useState } from "react";
-// import {
-//   DownOutlined,
-//   SmileOutlined,
-//   CheckSquareFilled,
-//   InfoCircleFilled,
-//   IssuesCloseOutlined,
-// } from "@ant-design/icons";
-// import { Dropdown, Space } from "antd";
-// import { useDropDown } from "../../hooks/useDropDown";
-
-// export const Status = () => {
-//   // const [menuId, setMenuID] = useState();
-//   const { dropDown, isLoading, error } = useDropDown();
-
-//   // const handleChange = (e) => {
-//   //   e.preventDefault();
-//   // };
-
-//   return (
-//     <React.Fragment className="flex justify-center items-center h-screen">
-//       <Dropdown
-//       // menu={{
-//       //   status,
-//       // }}
-//       >
-//         <a onClick={(e) => {}}>
-//           <Space>
-//             Update Status
-//             <DownOutlined />
-//           </Space>
-//         </a>
-//       </Dropdown>
-//     </React.Fragment>
-//   );
-// };
-
 import React, { useState, useEffect } from "react";
-import { DownOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Dropdown, message, Space, Tooltip } from "antd";
+import {
+  DownOutlined,
+  UserOutlined,
+  CheckCircleOutlined,
+  IssuesCloseOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
+import { Button, Dropdown, message, Space, Modal } from "antd";
 import { usePut } from "../../hooks/usePut";
 import { useGet } from "../../hooks/useGet";
+import { ModalToDisplay } from "./Modal";
 
 export const Status = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [key, setKey] = useState(-1);
-  const [isDisable, setDisaple] = useState(true);
+  const [customInput, setCustomInput] = useState("");
+  const [isCustomSelected, setIsCustomSelected] = useState(false); // Track if "Custom" is selected
+
   const [statuslen, setStatusLen] = useState(0);
   const {
     putData,
@@ -53,16 +27,31 @@ export const Status = () => {
     error: putError,
   } = usePut();
   const { getData, data, isLoading: getLoading, error: getError } = useGet();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsCustomSelected(false);
+    setKey(4);
+  };
+  const handleCancel = () => {
+    setIsCustomSelected(false);
+  };
 
   const handleMenuClick = async (item) => {
-    setKey(item.key - 1);
     message.info(`Selected: ${items[item.key - 1].label}`);
     setSelectedItem(items[item.key - 1].label);
-    console.log(key);
-
-    // data.status.push();
-
-    // await getData("http://localhost:8087/api/issues/2"); //?for now issue 2
+    if (items[item.key - 1].label === "Custom") {
+      setIsCustomSelected(true); // Set to true when "Custom" is selected
+      if (isCustomSelected) {
+        setKey(item.key - 1);
+      }
+    } else {
+      setIsCustomSelected(false); // Reset to false for other selections
+      setKey(item.key - 1);
+    }
   };
 
   useEffect(() => {
@@ -74,39 +63,59 @@ export const Status = () => {
 
   useEffect(() => {
     if (data && data.length > 0) {
-      console.log("before upadata : ", data[0].status);
-
-      data[0].status.push(status[key]);
       setStatusLen(data[0].status.length);
-      const body = {
-        status: data[0].status,
-      };
-      async function put() {
-        await putData("http://localhost:8087/api/issues/3", body); //?for now issue 2
+    }
+  }, [data]);
+
+  useEffect(() => {
+    try {
+      if (data && data.length > 0) {
+        console.log("data on key change", status[key]);
+        data[0].status.push(status[key]);
+        setStatusLen(data[0].status.length);
+        const body = {
+          status: data[0].status,
+        };
+        console.log("updagted body :", body);
+        async function put() {
+          await putData("http://localhost:8087/api/issues/3", body); //?for now issue 2
+        }
+        put();
+
+        if (response && data && response.length > 0) {
+          setStatusLen(response[0].status.length);
+        }
       }
-      put();
-      if (response) {
-        setStatusLen(response[0].status.length);
-      }
+    } catch (err) {
+      message.info(err);
     }
   }, [key]);
 
   const status = [
     {
       color: "green",
-      children: "Approved Issue at 9/16/2023 at 17:29:50",
+      dot: "(CheckCircleOutlined)",
+      children: `Approved Issue at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
     },
     {
       color: "green",
-      children: "Annonced to Respective Department at 9/16/2023 at 17:29:50",
+      dot: "(IssuesCloseOutlined)",
+      children: `Annonced to Respective Department at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
     },
     {
       color: "orange",
-      children: "Estimated Arrival for service at 9/16/2023 at 17:29:50",
+      dot: "(ClockCircleOutlined)",
+      children: `Estimated Arrival for service at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
     },
     {
-      color: "green",
-      children: "Closed Issues at 9/16/2023 at 17:29:50",
+      color: "red",
+      dot: "(CloseCircleOutlined)",
+      children: `Closed Issues at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+    },
+    {
+      color: "blue",
+      dot: "(QuestionCircleOutlined)",
+      children: `${customInput} at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
     },
   ];
 
@@ -114,25 +123,24 @@ export const Status = () => {
     {
       label: "Approval",
       key: "1",
-      icon: <UserOutlined />,
+      icon: <CheckCircleOutlined />,
     },
     {
       label: "Annonced to Respective Department",
       key: "2",
-      icon: <UserOutlined />,
-
+      icon: <IssuesCloseOutlined />,
       disabled: statuslen >= 3 ? false : true,
     },
     {
       label: "Estimated Arrival date",
       key: "3",
-      icon: <UserOutlined />,
+      icon: <ClockCircleOutlined />,
       disabled: statuslen >= 4 ? false : true,
     },
     {
       label: "Close the issue",
       key: "4",
-      icon: <UserOutlined />,
+      icon: <CloseCircleOutlined />,
       danger: true,
       disabled: statuslen >= 5 ? false : true,
       danger: true,
@@ -140,9 +148,8 @@ export const Status = () => {
     {
       label: "Custom",
       key: "5",
-      icon: <UserOutlined />,
-      danger: true,
-      disabled: true,
+      icon: <QuestionCircleOutlined />,
+      disabled: statuslen >= 3 ? false : true,
     },
   ];
 
@@ -154,12 +161,39 @@ export const Status = () => {
   return (
     <Space wrap>
       <Dropdown menu={menuProps}>
-        <Button>
-          <Space>
-            {selectedItem ? selectedItem : "Select an item"}
-            <DownOutlined />
-          </Space>
-        </Button>
+        {isCustomSelected ? (
+          <>
+            <Button>
+              <Space>
+                {selectedItem ? selectedItem : "Select an item"}
+                <DownOutlined />
+              </Space>
+            </Button>
+            <Modal
+              title="Custom Input"
+              open={isCustomSelected}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <input
+                type="text"
+                value={customInput}
+                onClick={() => {
+                  console.log(isCustomSelected, "set");
+                }}
+                onChange={(e) => setCustomInput(e.target.value)}
+                className="text-black border-[1.5px] border-blue-600 focus:border-blue-600 rounded-sm w-1/2"
+              />
+            </Modal>
+          </>
+        ) : (
+          <Button>
+            <Space>
+              {selectedItem ? selectedItem : "Select an item"}
+              <DownOutlined />
+            </Space>
+          </Button>
+        )}
       </Dropdown>
     </Space>
   );
