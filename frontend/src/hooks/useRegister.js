@@ -28,7 +28,7 @@ export const useRegister = () => {
 
     setIsLoading(true);
 
-    const response = await fetch(`http://localhost:8086/api/${role}`, {
+    const response = await fetch(`http://localhost:8087/api/${role}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -32,7 +32,7 @@ export class EmployeeRoutes {
       "/:id",
       // (req, res, next) =>
       // verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
-      (req: Request, res: Response) => this.controller.getById(req, res)
+      (req: Request, res: Response) => this.controller.getByUserId(req, res)
     );
 
     // Create a new employee

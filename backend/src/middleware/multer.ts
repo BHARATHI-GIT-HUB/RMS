@@ -1,4 +1,3 @@
-import { upload } from "./../controllers/issuse.controller";
 import multer from "multer";
 import path from "path";
 
@@ -15,7 +14,6 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req: any, file: any, cb: any) => {
-  console.log(__dirname);
   if (
     file.mimetype === "image/jpg" ||
     file.mimetype === "image/jpeg" ||

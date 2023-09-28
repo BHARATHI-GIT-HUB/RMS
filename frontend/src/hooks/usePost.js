@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 export const usePost = () => {
   const [error, setError] = useState(null);
@@ -12,8 +13,7 @@ export const usePost = () => {
     const response = await fetch(path, {
       method: "POST",
       headers: {
-        "Content-Type":
-          "multipart/form-data; Boundary=---------------------------WebKitFormBoundaryh9UF2hFjspgvNh9T--",
+        "Content-Type": "application/json",
       },
       body: body,
     });
@@ -24,35 +24,37 @@ export const usePost = () => {
       setError(json.error);
     }
     if (response.ok) {
+      console.log(json, "onpost");
       // localStorage.setItem("token", json.token);
       // window.location.href = "/";
     }
   };
 
-  const postDataIssue = async (path, body) => {
-    console.log(path, body);
+  const postDataIssue = async (path, data) => {
+    console.log(path, data);
 
     setIsLoading(true);
+    const formData = new FormData();
 
-    const response = await fetch(path, {
-      method: "POST",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+    // Append fields to the FormData object
+    formData.append("title", data.title);
+    formData.append("place", data.place);
+    formData.append("description", data.description);
+    formData.append("employeeId", data.employeeId);
+    formData.append("departmentId", data.departmentId);
+    formData.append("status", data.status);
+    formData.append("photo", data.photo[0].originFileObj);
 
-      body: JSON.stringify(body),
-    });
-
-    const json = await response.json();
-
-    if (!response.ok) {
-      setError(json.error);
-    }
-    if (response.ok) {
-      localStorage.setItem("token", json.token);
-      console.log(json);
-      // setResponse(json)
-    }
+    axios
+      .post(path, formData)
+      .then((res) => {
+        setResponse(res);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setIsLoading(false);
+      });
   };
   return { postData, postDataIssue, response, isLoading, error };
 };

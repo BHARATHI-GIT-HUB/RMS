@@ -56,6 +56,7 @@ const tailFormItemLayout = {
   },
 };
 const normFile = (e) => {
+  console.log(e.target, "here");
   if (Array.isArray(e)) {
     return e;
   }
@@ -68,6 +69,7 @@ const normFile = (e) => {
 
 export const IssueForm = () => {
   const [form] = Form.useForm();
+  const [formData, setFormData] = useState();
   const { postDataIssue, response, isloading, error } = usePost();
 
   const {
@@ -76,20 +78,28 @@ export const IssueForm = () => {
     isLoading: isDepartmentLoading,
     error: departmentError,
   } = useGet();
+  const {
+    getData: getEmpData,
+    data: EmpData,
+    isLoading: isEmpLoading,
+    error: isEmpError,
+  } = useGet();
 
   const onFinish = async (values) => {
-    const user = localStorage.getItem("user");
-    const data = JSON.parse(user);
-    values.employeeId = data.id;
-    // console.log(values);
-    await postDataIssue("http://localhost:8087/api/issues/", values);
+    setFormData(values);
+    values.employeeId = EmpData[0].id;
+    await postDataIssue("http://localhost:8087/api/issues", values);
   };
 
   useEffect(() => {
-    getData("http://localhost:8087/api/department");
-  }, []);
-
-  // const [autoCompleteResult, setAutoCompleteResult] = useState([]);
+    async function fetch() {
+      const user = localStorage.getItem("user");
+      const data = JSON.parse(user);
+      await getData("http://localhost:8087/api/department");
+      await getEmpData(`http://localhost:8087/api/employee/${data.id}`);
+    }
+    fetch();
+  }, [0]);
 
   return (
     <Form
@@ -184,13 +194,15 @@ export const IssueForm = () => {
         <Select
           // !!fuck what they say
           options={
-            departmentData &&
-            departmentData.map((value) => ({
+            departmentData.length > 0 &&
+            departmentData[0].map((value) => ({
               value: value.userId,
               label: value.department_name,
             }))
           }
-        ></Select>
+        >
+          {/* {console.log(departmentData, "inseid")} */}
+        </Select>
       </Form.Item>
 
       <Form.Item label="Status" name="status">
@@ -200,7 +212,10 @@ export const IssueForm = () => {
       </Form.Item>
 
       <Form.Item {...tailFormItemLayout} className="self-center">
-        <Primary text="Register" />
+        {/* <Primary text="Register" onClick={onFinish} /> */}
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
       </Form.Item>
     </Form>
   );

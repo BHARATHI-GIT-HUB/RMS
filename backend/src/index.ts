@@ -1,5 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
+import multer from "multer";
+import upload from "./middleware/multer";
 import { Secret } from "jsonwebtoken";
 import { User } from "./models/user";
 import {
@@ -72,4 +74,16 @@ app.use("/api/user", new UserRoutes().getRouter());
 const port = 8087;
 app.listen(port, () => {
   console.log(`App listening on port http://localhost:${port}`);
+});
+
+// Create a Multer upload instance with the storage options
+
+app.post("/test", upload.single("photo"), async (req, res) => {
+  console.log(req.body); // Contains text fields like title, place, etc.
+  if (!req.file) {
+    console.log("no file"); // Contains the uploaded file information
+  } else {
+    console.log(req.file); // Contains the uploaded file information
+  }
+  res.status(200).json({ message: "Data received successfully" });
 });
