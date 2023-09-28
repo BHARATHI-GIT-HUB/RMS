@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "antd";
-import { Button, Dropdown } from "antd";
-// import Details from "../details";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { SmileOutlined } from "@ant-design/icons";
-import axios from "axios";
+import { Button, Dropdown, Alert, Space } from "antd";
+import { NotApproved } from "./NotApproved";
 
+import { useGet } from "../../hooks/useGet";
+import { usePut } from "../../hooks/usePut";
 const { Meta } = Card;
 
 export const IssueCard = ({
@@ -17,22 +14,64 @@ export const IssueCard = ({
   place,
   currstatus,
   photoUrl,
+  showAlert,
+  setShowAlert,
+  isCloseIssue,
+  setIsCloseIssue,
 }) => {
-  // const queryClient = useQueryClient();
+  const { getData, data, isLoading, error } = useGet();
+  const {
+    putData,
+    response,
+    isLoading: putLoading,
+    error: putError,
+  } = usePut();
 
-  // const updateIssueMutation = useMutation(
-  //   (updatedData) => {
-  //     return axios.put(`http://localhost:8087/api/issues/${id}`, updatedData);
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       console.log("updated");
-  //     },
-  //     onError: (err) => {
-  //       console.log(err);
-  //     },
-  //   }
-  // );
+  const handleNotApproval = () => {
+    async function fetch() {
+      await getData(`http://localhost:8087/api/issues/${id}`);
+    }
+    fetch();
+  };
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      data[0].status.push(status[0]);
+      data[0].status.push(status[1]);
+
+      const body = {
+        status: data[0].status,
+      };
+      console.log("updagted body :", body);
+      async function put() {
+        await putData(`http://localhost:8087/api/issues/${id}`, body); //?for now issue 2
+      }
+      put();
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (response) {
+      setShowAlert(true);
+    }
+  }, [response]);
+
+  const status = [
+    {
+      color: "blue",
+      children: `Viewed Issue at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+    },
+    {
+      color: "yellow",
+      dot: "(IssuesCloseOutlined)",
+      children: `Not Allowed Issue to Respective Department at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+    },
+    {
+      color: "red",
+      dot: "(CloseCircleOutlined)",
+      children: `Closed Issues at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+    },
+  ];
 
   const items = [
     {
@@ -41,7 +80,6 @@ export const IssueCard = ({
         <a
           target="_blank"
           rel="noopener noreferrer"
-          // href="https://www.antgroup.com"
           onClick={() => {
             const data = {
               status: [
@@ -56,7 +94,6 @@ export const IssueCard = ({
                 },
               ],
             };
-            // updateIssueMutation.mutate(data);
           }}
         >
           Approvaed
@@ -84,7 +121,6 @@ export const IssueCard = ({
                 },
               ],
             };
-            // updateIssueMutation.mutate(data);
           }}
         >
           Not Approvaed
@@ -94,29 +130,52 @@ export const IssueCard = ({
   ];
 
   return (
-    <Card
-      style={{
-        width: 300,
-      }}
-      cover={
-        <img alt="example" src={`http://localhost:8087/images/` + photoUrl} />
-      } // Use the photoUrl prop
-      // onClick={() => {
-      //   navigate("/details/1");
-      // }}
-    >
-      <Meta className="text-start" title={name} description={description} />
-      <div className="flex justify-between items-center mt-4">
-        <p>{place}</p>
-        <div>|</div>
-        <Dropdown
-          menu={{ items }}
-          placement="topRight"
-          arrow={{ pointAtCenter: true }}
-        >
-          <Button>Approval</Button>
-        </Dropdown>
-      </div>
-    </Card>
+    <React.Fragment>
+      {showAlert ? (
+        <Alert
+          message="Request"
+          description={`Do you like to close this issue ${name}`}
+          type="info"
+          action={
+            <Space direction="vertical">
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => setIsCloseIssue(true)}
+              >
+                Accept
+              </Button>
+              {/* <Button size="small" danger ghost>
+                Decline
+              </Button> */}
+            </Space>
+          }
+          closable
+          className="absolute top-20 right-10 z-10 "
+        />
+      ) : (
+        ""
+      )}
+      <Card
+        style={{
+          width: 350,
+          zIndex: 0,
+        }}
+        cover={
+          <img
+            alt="example"
+            src={`http://localhost:8087/images/` + photoUrl}
+            className="h-60 object-center"
+          />
+        }
+      >
+        <Meta className="text-start" title={name} description={description} />
+        <div className="flex justify-between items-center mt-4">
+          <p>{place}</p>
+          <div>|</div>
+          <Button onClick={handleNotApproval}>Not Approval</Button>
+        </div>
+      </Card>
+    </React.Fragment>
   );
 };

@@ -29,17 +29,6 @@ export function EmployeeLayout() {
     updateRender(menu.key);
   };
 
-  // useEffect(async () => {
-  //   await isAuth("EMPLOYEE");
-  //   await getData("http://localhost:8087/api/issues/1");
-  //   if (localStorage.getItem("token")) {
-  //     setIsLoggedIn(true);
-  //   }
-  //   return () => {
-  //     console.log("got data");
-  //   };
-  // }, []);
-
   useEffect(() => {
     async function fetch() {
       await isAuth("EMPLOYEE");

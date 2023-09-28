@@ -93,6 +93,20 @@ export class DepartmentController {
     }
   }
 
+  async getByUserId(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const department = await Department.findOne({ where: { userId: id } });
+      if (department) {
+        res.status(200).json(department);
+      } else {
+        res.status(404).json({ error: `Employee with id ${id} not found` });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Failed to retrieve department" });
+    }
+  }
+
   async create(req: Request, res: Response) {
     try {
       const { name, password, department_name } = req.body;

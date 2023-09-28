@@ -36,8 +36,8 @@ export class DepartmentRoutes {
     // Get an departments by ID
     this.router.get(
       "/:id",
-      (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
-      (req: Request, res: Response) => this.controller.getById(req, res)
+      // (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
+      (req: Request, res: Response) => this.controller.getByUserId(req, res)
     );
 
     // Create a new departments

@@ -53,7 +53,7 @@ export const Nav = ({ children, menu }) => {
             background: colorBgContainer,
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
+            alignItems: "start",
             width: "100%",
           }}
           // className="mx-[24px] my-[16px] p-[24px] min-h-[280px]"

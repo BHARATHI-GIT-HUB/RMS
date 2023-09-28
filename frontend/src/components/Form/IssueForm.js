@@ -10,6 +10,7 @@ import {
   Row,
   Select,
   Upload,
+  Alert,
 } from "antd";
 import React, { useEffect, useState } from "react";
 
@@ -102,121 +103,143 @@ export const IssueForm = () => {
   }, [0]);
 
   return (
-    <Form
-      {...formItemLayout}
-      form={form}
-      name="register"
-      onFinish={onFinish}
-      scrollToFirstError
-      className="max-w-[600px] flex flex-col"
-    >
-      <Form.Item
-        name="title"
-        label="Title"
-        tooltip="What is your issue"
-        className="text-start"
-        rules={[
-          {
-            required: true,
-            message: "Please input your issue!",
-            whitespace: true,
-          },
-        ]}
+    <React.Fragment>
+      {response && (
+        <Alert
+          message="Success Message"
+          discription={"Submitted Issue Successfully"}
+          type="success"
+          showIcon
+          closable
+          className="absolute top-10 right-10"
+        />
+      )}
+      {error && (
+        <Alert
+          message="Error Message"
+          discription={error}
+          type="error"
+          showIcon
+          closable
+          className="absolute top-10 right-10"
+        />
+      )}
+      <Form
+        {...formItemLayout}
+        form={form}
+        name="register"
+        onFinish={onFinish}
+        scrollToFirstError
+        className="max-w-[600px] flex flex-col"
       >
-        <AutoComplete
-          //   options={websiteOptions}
-          //   onChange={onDesignationChange}
-          placeholder="Title"
+        <Form.Item
+          name="title"
+          label="Title"
+          tooltip="What is your issue"
+          className="text-start"
+          rules={[
+            {
+              required: true,
+              message: "Please input your issue!",
+              whitespace: true,
+            },
+          ]}
         >
-          <Input />
-        </AutoComplete>
-      </Form.Item>
+          <AutoComplete
+            //   options={websiteOptions}
+            //   onChange={onDesignationChange}
+            placeholder="Title"
+          >
+            <Input />
+          </AutoComplete>
+        </Form.Item>
 
-      <Form.Item
-        name="place"
-        label="Place"
-        rules={[
-          {
-            required: true,
-            message: "Please input place of issue!",
-          },
-        ]}
-      >
-        <AutoComplete
-          //   options={websiteOptions}
-          //   onChange={onDesignationChange}
-          placeholder="Place"
+        <Form.Item
+          name="place"
+          label="Place"
+          rules={[
+            {
+              required: true,
+              message: "Please input place of issue!",
+            },
+          ]}
         >
-          <Input />
-        </AutoComplete>
-      </Form.Item>
+          <AutoComplete
+            //   options={websiteOptions}
+            //   onChange={onDesignationChange}
+            placeholder="Place"
+          >
+            <Input />
+          </AutoComplete>
+        </Form.Item>
 
-      <Form.Item
-        name="description"
-        label="Description"
-        rules={[
-          {
-            required: true,
-            message: "Please input Description!",
-          },
-        ]}
-      >
-        <AutoComplete
-          //   options={websiteOptions}
-          //   onChange={onDesignationChange}
-          placeholder="Description"
+        <Form.Item
+          name="description"
+          label="Description"
+          rules={[
+            {
+              required: true,
+              message: "Please input Description!",
+            },
+          ]}
         >
-          <Input />
-        </AutoComplete>
-      </Form.Item>
+          <AutoComplete
+            //   options={websiteOptions}
+            //   onChange={onDesignationChange}
+            placeholder="Description"
+          >
+            <Input />
+          </AutoComplete>
+        </Form.Item>
 
-      <Form.Item
-        name="photo"
-        label="Upload"
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
-      >
-        {/* The "action" prop should point to your backend's file upload endpoint */}
-        <Upload action="/api/upload" listType="picture-card" accept="image/*">
-          <div>
-            <div
-              style={{
-                marginTop: 8,
-              }}
-            >
-              Upload
+        <Form.Item
+          name="photo"
+          label="Upload"
+          valuePropName="fileList"
+          getValueFromEvent={normFile}
+        >
+          {/* The "action" prop should point to your backend's file upload endpoint */}
+          <Upload action="/api/upload" listType="picture-card" accept="image/*">
+            <div>
+              <div
+                style={{
+                  marginTop: 8,
+                }}
+              >
+                Upload
+              </div>
             </div>
-          </div>
-        </Upload>
-      </Form.Item>
+          </Upload>
+        </Form.Item>
 
-      <Form.Item label="Department" name="departmentId">
-        <Select
-          // !!fuck what they say
-          options={
-            departmentData.length > 0 &&
-            departmentData[0].map((value) => ({
-              value: value.userId,
-              label: value.department_name,
-            }))
-          }
-        >
-          {/* {console.log(departmentData, "inseid")} */}
-        </Select>
-      </Form.Item>
+        <Form.Item label="Department" name="departmentId">
+          <Select
+            // !!fuck what they say
+            options={
+              departmentData.length > 0 &&
+              departmentData[0].map((value) => ({
+                value: value.userId,
+                label: value.department_name,
+              }))
+            }
+          >
+            {/* {console.log(departmentData, "inseid")} */}
+          </Select>
+        </Form.Item>
 
-      <Form.Item label="Status" name="status">
-        <Select>
-          <Select.Option value="Create Issue" />
-        </Select>
-      </Form.Item>
+        <Form.Item label="Status" name="status">
+          <Select>
+            <Select.Option value="Create Issue" />
+          </Select>
+        </Form.Item>
 
-      <Form.Item {...tailFormItemLayout} className="self-center">
-        {/* <Primary text="Register" onClick={onFinish} /> */}
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item {...tailFormItemLayout} className="self-center">
+          {/* <Primary text="Register" onClick={onFinish} /> */}
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </React.Fragment>
   );
 };
