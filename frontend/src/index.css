@@ -43,3 +43,7 @@ code {
 :where(.css-dev-only-do-not-override-txh9fw).ant-timeline .ant-timeline-item {
   padding-bottom: 45px !important;
 }
+
+:where(.css-dev-only-do-not-override-txh9fw).ant-card .ant-card-meta-detail {
+  margin: 10px !important;
+}

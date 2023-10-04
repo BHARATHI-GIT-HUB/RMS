@@ -1,31 +1,50 @@
-import React, { useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Button, theme } from "antd";
+import React, { useState, useMemo } from "react";
+import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { useGet } from "../../hooks/useGet";
 
-const { Header, Sider, Content } = Layout;
+const { Header, Content, Footer, Sider } = Layout;
 
-export const Nav = ({ children, menu }) => {
+export const Nav = ({ menu }) => {
+  console.log("Menu :", menu);
+
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedKey, setSelectedKey] = useState("1"); // Initialize with default key
-
-  const handleMenuSelect = ({ key }) => {
-    setSelectedKey(key);
-  };
-
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
   return (
-    <Layout className="h-screen">
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+    <Layout
+      style={{
+        minHeight: "100vh",
+      }}
+    >
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={(value) => setCollapsed(value)}
+      >
         <div className="demo-logo-vertical" />
-        {menu}
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={["1"]}
+          mode="inline"
+          // items={menu}
+        >
+          {menu.map((item) => (
+            <Menu.Item
+              key={item.key}
+              icon={item.icon}
+              onClick={() => {
+                navigate(item.route);
+              }}
+            >
+              {item.label}
+            </Menu.Item>
+          ))}
+        </Menu>
+        <menu />
       </Sider>
       <Layout>
         <Header
@@ -33,33 +52,35 @@ export const Nav = ({ children, menu }) => {
             padding: 0,
             background: colorBgContainer,
           }}
-        >
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-            }}
-          />
-        </Header>
+        />
         <Content
           style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "start",
-            width: "100%",
+            margin: "0 16px",
           }}
-          // className="mx-[24px] my-[16px] p-[24px] min-h-[280px]"
         >
-          {children}
+          <Breadcrumb
+            style={{
+              margin: "16px 0",
+            }}
+          >
+            {/* <Breadcrumb.Item>User</Breadcrumb.Item>
+            <Breadcrumb.Item>Bill</Breadcrumb.Item> */}
+          </Breadcrumb>
+          <div
+            style={{
+              padding: 24,
+              minHeight: "100%",
+              background: colorBgContainer,
+            }}
+          >
+            <Outlet />
+          </div>
         </Content>
+        <Footer
+          style={{
+            textAlign: "center",
+          }}
+        ></Footer>
       </Layout>
     </Layout>
   );

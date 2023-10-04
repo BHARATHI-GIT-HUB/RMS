@@ -1,37 +1,46 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import { useGet } from "../../hooks/useGet";
 
-export const NotApproved = ({ id }) => {
+function NotApproved() {
+  const [renderCount, setRenderCount] = useState(0);
   const { getData, data, isLoading, error } = useGet();
 
   useEffect(() => {
     async function fetch() {
-      await getData(`http://localhost:8087/api/issues/${id}`);
+      await getData("http://localhost:8087/api/employee");
     }
+    console.log("fetch triggered");
     fetch();
-  }, [id]);
+  }, [0]);
 
-  //   const status = [
-  //     {
-  //       color: "blue",
-  //       children: `Viewed Issue at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
-  //     },
-  //     {
-  //       color: "yellow",
-  //       dot: "(IssuesCloseOutlined)",
-  //       children: `Not Allowed Issue to Respective Department at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
-  //     },
-  //     {
-  //       color: "red",
-  //       dot: "(CloseCircleOutlined)",
-  //       children: `Closed Issues at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
-  //     },
-  //   ];
+  useEffect(() => {
+    if (data.length > 0) {
+      console.log("data in comp :", data);
+      setRenderCount((prevCount) => prevCount + 1); // Increment the render count
+    }
+  }, [data.length]);
 
-  //   if (data) {
-  //     console.log(data);
-  //   }
+  return (
+    <div>
+      <p>Render Count: {renderCount}</p>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error}</p>
+      ) : (
+        <ul>
+          {data.length > 0 &&
+            data[0].map((item, index) => (
+              <div key={index}>
+                {console.log(item)}
+                <li key={index}>{item.someProperty}</li>
+                <h1>hello</h1>
+              </div>
+            ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
-  //   return <div></div>;
-};
+export default NotApproved;

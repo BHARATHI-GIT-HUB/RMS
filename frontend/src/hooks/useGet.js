@@ -5,6 +5,13 @@ export const useGet = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [data, setData] = useState([]);
 
+  // useEffect(() => {
+  //   if (data.length > 0) {
+  //     console.log("data in useEffect:", data);
+  //     setIsLoading(false);
+  //   }
+  // }, [data]);
+
   const getData = async (path) => {
     console.log(path, "path");
     setIsLoading(true);
@@ -22,6 +29,7 @@ export const useGet = () => {
       setError(json.error);
     }
     if (response.ok) {
+      setIsLoading(false);
       localStorage.setItem("token", json.token);
       console.log(json, "json");
       setData((prevData) => [...prevData, json]);

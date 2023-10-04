@@ -11,7 +11,7 @@ import { Timeline, Spin, Space } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 
 export const TimeLine = ({ status }) => {
-  console.log(status, "here");
+  console.log(status, "Data");
 
   const componentMap = {
     ClockCircleOutlined: ClockCircleOutlined,
@@ -32,9 +32,12 @@ export const TimeLine = ({ status }) => {
   };
 
   return (
-    <>
-      {console.log(status.map(convertDotStringToJSX), "converted")}
-      <Timeline mode="alternate" items={status.map(convertDotStringToJSX)} />
-    </>
+    <div className="mt-10">
+      <Timeline
+        mode="alternate"
+        items={status && status.map(convertDotStringToJSX)}
+        className=""
+      />
+    </div>
   );
 };

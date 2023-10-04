@@ -13,7 +13,7 @@ import { usePut } from "../../hooks/usePut";
 import { useGet } from "../../hooks/useGet";
 import { ModalToDisplay } from "./Modal";
 
-export const Status = () => {
+export const Status = ({ id }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [key, setKey] = useState(-1);
   const [customInput, setCustomInput] = useState("");
@@ -56,7 +56,7 @@ export const Status = () => {
 
   useEffect(() => {
     async function fetch() {
-      await getData("http://localhost:8087/api/issues/3"); //?for now issue 2
+      await getData(`http://localhost:8087/api/issues/${id}`); //?for now issue 2
     }
     fetch();
   }, []);
@@ -78,7 +78,7 @@ export const Status = () => {
         };
         console.log("updagted body :", body);
         async function put() {
-          await putData("http://localhost:8087/api/issues/3", body); //?for now issue 2
+          await putData(`http://localhost:8087/api/issues/${id}`, body); //?for now issue 2
         }
         put();
 
@@ -160,7 +160,7 @@ export const Status = () => {
 
   return (
     <Space wrap>
-      <Dropdown menu={menuProps}>
+      <Dropdown menu={menuProps} placement="bottomLeft" arrow>
         {isCustomSelected ? (
           <>
             <Button>

@@ -31,6 +31,14 @@ export class IssueRoutes {
       (req: Request, res: Response) => this.controller.getById(req, res)
     );
 
+    this.router.get(
+      "/employee/:id",
+      //
+      // (req, res, next) =>
+      //   //   // verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
+      (req: Request, res: Response) => this.controller.getByEmployeeId(req, res)
+    );
+
     // Create a new employee
     this.router.post(
       "/",

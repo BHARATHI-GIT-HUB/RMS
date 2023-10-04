@@ -1,16 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export const useAuth = () => {
-  const [isLoading, setIsLoading] = useState(false);
+export const useAuth = (expectedRole) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // console.log(expectedRole);
 
-  const isAuth = async (role) => {
-    setIsLoading(true);
-    const user = localStorage.getItem("user");
-    const data = JSON.parse(user);
-    setIsLoading(false);
-    if (!localStorage.getItem("token") || !user || data.role !== role) {
-      window.location.href = "/";
-    }
-  };
-  return { isAuth, isLoading };
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        setIsLoading(true);
+        const token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        if (!token || !user || user.role !== expectedRole) {
+          throw new Error("Authentication failed");
+        }
+
+        setIsAuthenticated(true);
+      } catch (error) {
+        setIsAuthenticated(false);
+        // Redirect to the login page or home page based on your application logic.
+        // You can use a router for navigation.
+        window.location.href = "/";
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [expectedRole]);
+
+  return { isAuthenticated, isLoading };
 };

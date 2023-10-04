@@ -14,16 +14,8 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 
-import {
-  useMutation,
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
-import axios from "axios";
 import { usePost } from "../../hooks/usePost";
 import { useGet } from "../../hooks/useGet";
-import { Primary } from "../Button/Primary";
 
 const formItemLayout = {
   labelCol: {
@@ -97,7 +89,9 @@ export const IssueForm = () => {
       const user = localStorage.getItem("user");
       const data = JSON.parse(user);
       await getData("http://localhost:8087/api/department");
-      await getEmpData(`http://localhost:8087/api/employee/${data.id}`);
+      if (data && data.length > 0) {
+        await getEmpData(`http://localhost:8087/api/employee/${data.id}`);
+      }
     }
     fetch();
   }, [0]);
