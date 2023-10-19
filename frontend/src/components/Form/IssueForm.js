@@ -49,7 +49,6 @@ const tailFormItemLayout = {
   },
 };
 const normFile = (e) => {
-  console.log(e.target, "here");
   if (Array.isArray(e)) {
     return e;
   }
@@ -81,6 +80,7 @@ export const IssueForm = () => {
   const onFinish = async (values) => {
     setFormData(values);
     values.employeeId = EmpData[0].id;
+    console.log(values);
     await postDataIssue("http://localhost:8087/api/issues", values);
   };
 
@@ -89,12 +89,16 @@ export const IssueForm = () => {
       const user = localStorage.getItem("user");
       const data = JSON.parse(user);
       await getData("http://localhost:8087/api/department");
-      if (data && data.length > 0) {
+      if (data) {
         await getEmpData(`http://localhost:8087/api/employee/${data.id}`);
       }
     }
     fetch();
   }, [0]);
+
+  useEffect(() => {
+    console.log("departmentData :", departmentData);
+  }, [departmentData]);
 
   return (
     <React.Fragment>
@@ -212,7 +216,7 @@ export const IssueForm = () => {
             options={
               departmentData.length > 0 &&
               departmentData[0].map((value) => ({
-                value: value.userId,
+                value: value.id,
                 label: value.department_name,
               }))
             }

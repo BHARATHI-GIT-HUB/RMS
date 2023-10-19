@@ -17,7 +17,7 @@ export function DetailedViewCard({ value }) {
         cover={
           <img
             alt="example"
-            src={`http://localhost:8087/images/` + value.photurl}
+            src={`http://localhost:8087/images/` + value.photo}
             className="h-[250px] object-center"
           />
         }

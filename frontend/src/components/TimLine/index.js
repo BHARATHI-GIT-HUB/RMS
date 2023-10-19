@@ -6,14 +6,15 @@ import {
   ClockCircleOutlined,
   CloseCircleOutlined,
   QuestionCircleOutlined,
+  SmileOutlined,
 } from "@ant-design/icons";
 import { Timeline, Spin, Space } from "antd";
-import { SmileOutlined } from "@ant-design/icons";
 
-export const TimeLine = ({ status }) => {
-  console.log(status, "Data");
+export const TimeLine = ({ status, setShowDeleteAlert }) => {
+  console.log(status, setShowDeleteAlert, "Data");
 
   const componentMap = {
+    CheckCircleOutlined: CheckCircleOutlined,
     ClockCircleOutlined: ClockCircleOutlined,
     CloseCircleOutlined: CloseCircleOutlined,
     IssuesCloseOutlined: IssuesCloseOutlined,
@@ -21,11 +22,22 @@ export const TimeLine = ({ status }) => {
   };
 
   const convertDotStringToJSX = (item) => {
-    if (item.dot) {
-      const iconContent = item.dot.replace(/(\(|\))/g, "");
-      const DotComponent = componentMap[iconContent];
-      if (DotComponent) {
-        return { ...item, dot: <DotComponent style={{ fontSize: "16px" }} /> };
+    if (item != null) {
+      if (item.dot) {
+        const iconContent = item.dot.replace(/(\(|\))/g, "");
+        const DotComponent = componentMap[iconContent];
+        if (
+          setShowDeleteAlert != undefined &&
+          item.dot == "(CloseCircleOutlined)"
+        ) {
+          setShowDeleteAlert(true);
+        }
+        if (DotComponent) {
+          return {
+            ...item,
+            dot: <DotComponent style={{ fontSize: "16px" }} />,
+          };
+        }
       }
     }
     return item;

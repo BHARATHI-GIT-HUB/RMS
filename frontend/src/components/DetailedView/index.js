@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Nav } from "../NavBar";
 import { Card, Avatar, Skeleton } from "antd";
 import { Status } from "../DropDown";

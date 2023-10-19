@@ -65,7 +65,10 @@ export const Status = ({ id }) => {
     if (data && data.length > 0) {
       setStatusLen(data[0].status.length);
     }
-  }, [data]);
+    if (response) {
+      window.location.reload(false);
+    }
+  }, [data, response]);
 
   useEffect(() => {
     try {
@@ -81,10 +84,6 @@ export const Status = ({ id }) => {
           await putData(`http://localhost:8087/api/issues/${id}`, body); //?for now issue 2
         }
         put();
-
-        if (response && data && response.length > 0) {
-          setStatusLen(response[0].status.length);
-        }
       }
     } catch (err) {
       message.info(err);

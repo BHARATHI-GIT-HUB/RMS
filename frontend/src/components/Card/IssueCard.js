@@ -48,23 +48,16 @@ export const IssueCard = ({
     }
   };
 
-  useEffect(() => {
-    if (response) {
-      console.log("response :", response);
-      navigate(`/department/detailedview/${id}`);
-      setShowAlert(true);
-    }
-  }, [response]);
-
   const handleClick = () => {
-    if (data && data.length > 0) {
-      console.log("inside ");
+    if (data && data.length > 0 && data[0].status.length <= 1) {
       data[0].status.push(status[0]);
       const body = {
         status: data[0].status,
       };
       updateData(body);
     }
+    navigate(`/department/detailedview/${id}`);
+    setShowAlert(true);
   };
 
   async function updateData(body) {
@@ -82,11 +75,6 @@ export const IssueCard = ({
       dot: "(IssuesCloseOutlined)",
       children: `Not Approved Issue by Respective Department at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
     },
-    // {
-    //   color: "red",
-    //   dot: "(CloseCircleOutlined)",
-    //   children: `Closed Issues at ${new Date().toLocaleDateString()} at ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
-    // },
   ];
 
   return (
