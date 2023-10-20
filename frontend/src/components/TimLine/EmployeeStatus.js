@@ -3,11 +3,17 @@ import { useGet } from "../../hooks/useGet";
 import { useDelete } from "../../hooks/useDelete";
 import Loading from "../Loading";
 import { TimeLine } from ".";
-import { Alert, Button, Space } from "antd";
-import Notification from "../Notification";
+import { Alert, Button, Space, notification } from "antd";
 
 function EmployeeStatus() {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+  const openNotificationWithIcon = (type) => {
+    api[type]({
+      message: "Deleted Succesfully",
+      description: `Issue is Deleted Succesfully`,
+    });
+  };
   const {
     getData: getUserData,
     data: userData,
@@ -22,27 +28,16 @@ function EmployeeStatus() {
   } = useGet();
   const { DeleteData, response, isLoading, error } = useDelete();
 
-  const handleClick = () => {
-    async function fetch() {
-      //  const user = JSON.parse(localStorage.getItem("user"));
-      // await getUserData(`http://localhost:8087/api/employee/${user.id}`);
-      // await getData(`http://localhost:8087/api/issues/employee/${user.id}`);
-    }
-    fetch();
-  };
-
   useEffect(() => {
     async function fetch() {
       const user = JSON.parse(localStorage.getItem("user"));
       await getUserData(`http://localhost:8087/api/employee/${user.id}`);
-      // await getData(`http://localhost:8087/api/issues/employee/${user.id}`);
     }
     fetch();
   }, []);
 
   useEffect(() => {
     async function fetch() {
-      console.log("userData", userData[0].id);
       await getIssueData(
         `http://localhost:8087/api/issues/employee/${userData[0].id}`
       );
@@ -52,18 +47,21 @@ function EmployeeStatus() {
     }
   }, [userData]);
 
-  if (issueData.length > 0) {
-    issueData[0][0].status.forEach((item, index) => {
-      if (item != null) {
-        if (
-          item.children.includes("Closed") == true &&
-          showDeleteAlert == false
-        ) {
-          setShowDeleteAlert(true);
+  useEffect(() => {
+    if (issueData[0] && issueData[0].length > 0) {
+      issueData[0][0].status.forEach((item, index) => {
+        if (item != null) {
+          if (
+            item.children.includes("Closed") == true &&
+            showDeleteAlert == false
+          ) {
+            setShowDeleteAlert(true);
+          }
         }
-      }
-    });
-  }
+      });
+    }
+  }, [issueData[0]]);
+
   if (issueDataLoading || userDataLoading) {
     return <Loading />;
   }
@@ -74,11 +72,29 @@ function EmployeeStatus() {
     );
   }
 
+  if (response) {
+    window.location.reload(false);
+  }
+
+  const handleClick = () => {
+    async function fetch() {
+      setShowDeleteAlert(false);
+      openNotificationWithIcon("success");
+      setTimeout(async () => {
+        await DeleteData(
+          `http://localhost:8087/api/issues/${issueData[0][0].id}`
+        );
+      }, 1000);
+    }
+    fetch();
+  };
+
   return (
     <>
-      {showDeleteAlert && (
+      {contextHolder}
+      {showDeleteAlert ? (
         <Alert
-          className="w-[430px] fixed top-[98px] right-[17px] z-10"
+          className="w-[430px] fixed top-[20px] right-[17px] z-10"
           message="This Issue is Closed"
           description="Would to like to Delete this Issue"
           type="info"
@@ -87,20 +103,27 @@ function EmployeeStatus() {
               <Button size="small" type="primary" onClick={handleClick}>
                 Accept
               </Button>
-              {/* <Button size="small" danger ghost>
-                Decline
-              </Button> */}
             </Space>
           }
           closable
         />
-      )}
-      {issueData && issueData.length > 0 && (
-        <TimeLine
-          status={issueData[0][0].status}
-          setShowDeleteAlert={setShowDeleteAlert}
-        />
-      )}
+      ) : null}
+      {issueData[0] &&
+        (issueData[0].length > 0 ? (
+          <>
+            <h1 className="font-extralight text-xl capitalize">
+              {issueData[0][0].title}
+            </h1>
+            <TimeLine
+              status={issueData[0][0].status}
+              setShowDeleteAlert={setShowDeleteAlert}
+            />
+          </>
+        ) : (
+          <h1 className="flex justify-center items-center text-xl fonr-normal">
+            No Issue Posted yet{" "}
+          </h1>
+        ))}
     </>
   );
 }

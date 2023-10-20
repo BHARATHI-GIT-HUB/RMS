@@ -59,10 +59,9 @@ export class IssueRoutes {
     // Delete an employee
     this.router.delete(
       "/:id",
-      (req, res, next) =>
-        // verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
-        (req: Request, res: Response) =>
-          this.controller.delete(req, res)
+      // (req, res, next) =>
+      // verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
+      (req: Request, res: Response) => this.controller.delete(req, res)
     );
   }
 

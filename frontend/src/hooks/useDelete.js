@@ -5,8 +5,8 @@ export const useDelete = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [response, setResponse] = useState(null);
 
-  const DeleteData = async (path, body) => {
-    console.log(path, body);
+  const DeleteData = async (path, token) => {
+    console.log(path, token);
 
     setIsLoading(true);
 
@@ -15,7 +15,6 @@ export const useDelete = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
     });
 
     const json = await response.json();

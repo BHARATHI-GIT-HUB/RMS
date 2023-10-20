@@ -30,7 +30,7 @@ export const TimeLine = ({ status, setShowDeleteAlert }) => {
           setShowDeleteAlert != undefined &&
           item.dot == "(CloseCircleOutlined)"
         ) {
-          setShowDeleteAlert(true);
+          // setShowDeleteAlert(true);
         }
         if (DotComponent) {
           return {
