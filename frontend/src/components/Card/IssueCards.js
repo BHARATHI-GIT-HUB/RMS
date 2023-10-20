@@ -3,6 +3,7 @@ import { useGet } from "../../hooks/useGet";
 import React, { useState, useEffect } from "react";
 import { Layout, Menu, Button, theme, Alert, Space } from "antd";
 import DetailedView from "../DetailedView";
+import Loading from "../Loading";
 
 const { Header, Sider, Content } = Layout;
 
@@ -43,14 +44,28 @@ export const IssueCards = () => {
     fetch();
   }, [userData]);
 
+  if (issuesLoading) {
+    return <Loading />;
+  }
+
+  if (issueData[0] && issueData[0].length <= 0) {
+    return (
+      <h1 className="flex justify-center items-center text-xl font-normal w-full">
+        No Issue Posted yet{" "}
+      </h1>
+    );
+  }
+
   return (
     <>
       <Content className="grid grid-cols-3 items-center gap-6 space-y-3 justify-items-center">
         <>
-          {issueData.length > 0 &&
+          {issueData[0] &&
+            issueData[0].length > 0 &&
             issueData[0].map((value, idx) => (
               <React.Fragment key={idx}>
-                <IssueCard
+                {console.log(value.id, "is")}
+                {/* <IssueCard
                   id={value.id}
                   name={value.title}
                   description={value.description}
@@ -59,7 +74,7 @@ export const IssueCards = () => {
                   photoUrl={value.photo}
                   showAlert={showAlert}
                   setShowAlert={setShowAlert}
-                />
+                /> */}
               </React.Fragment>
             ))}
         </>
