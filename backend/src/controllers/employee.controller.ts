@@ -83,7 +83,7 @@ export class EmployeeController {
 
   async create(req: Request, res: Response) {
     try {
-      const { name, email, password, designation } = req.body;
+      const { name, email, phone, password, designation } = req.body;
       console.log("Data", name, email, password, designation);
       const existingEmail = await Employee.findOne({ where: { email: email } });
 
@@ -109,6 +109,7 @@ export class EmployeeController {
           {
             userId: createdUser.id,
             email: email,
+            phone: phone,
             designation: designation,
           },
           { transaction }

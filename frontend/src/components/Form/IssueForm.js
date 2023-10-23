@@ -62,7 +62,7 @@ const normFile = (e) => {
 export const IssueForm = () => {
   const [form] = Form.useForm();
   const [formData, setFormData] = useState();
-  const { postDataIssue, response, isloading, error } = usePost();
+  const { postDataIssue, responseMessage, isloading, error } = usePost();
 
   const {
     getData,
@@ -101,8 +101,8 @@ export const IssueForm = () => {
   }, [departmentData]);
 
   return (
-    <React.Fragment>
-      {response && (
+    <div className="container w-full text-center">
+      {responseMessage && (
         <Alert
           message="Success Message"
           discription={"Submitted Issue Successfully"}
@@ -122,19 +122,20 @@ export const IssueForm = () => {
           className="absolute top-10 right-10"
         />
       )}
+      <h1 className="text-3xl sm:text-4xl font-semibold my-10">Issue From</h1>
       <Form
         {...formItemLayout}
         form={form}
         name="register"
         onFinish={onFinish}
         scrollToFirstError
-        className="max-w-[600px] flex flex-col"
+        className="sm:max-w-[500px] mx-auto"
       >
         <Form.Item
           name="title"
           label="Title"
           tooltip="What is your issue"
-          className="text-start"
+          className=""
           rules={[
             {
               required: true,
@@ -195,6 +196,12 @@ export const IssueForm = () => {
           label="Upload"
           valuePropName="fileList"
           getValueFromEvent={normFile}
+          rules={[
+            {
+              required: true,
+              message: "Please input Description!",
+            },
+          ]}
         >
           {/* The "action" prop should point to your backend's file upload endpoint */}
           <Upload action="/api/upload" listType="picture-card" accept="image/*">
@@ -229,13 +236,16 @@ export const IssueForm = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item {...tailFormItemLayout} className="self-center">
+        <Form.Item
+          {...tailFormItemLayout}
+          className="flex justify-center items-center mt-10"
+        >
           {/* <Primary text="Register" onClick={onFinish} /> */}
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" className="px-5 sm:px-20">
             Submit
           </Button>
         </Form.Item>
       </Form>
-    </React.Fragment>
+    </div>
   );
 };

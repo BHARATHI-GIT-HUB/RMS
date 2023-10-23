@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, notification } from "antd";
 const key = "updatable";
-const Notification = () => {
+const Notification = ({ message, type }) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = () => {
     api.open({

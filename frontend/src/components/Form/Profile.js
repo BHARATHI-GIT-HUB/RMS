@@ -84,13 +84,10 @@ const Profile = () => {
         residence: ["zhejiang", "hangzhou", "xihu"],
         prefix: "86",
       }}
-      style={{
-        maxWidth: 600,
-      }}
       scrollToFirstError
-      className="w-full"
+      className="sm:min-w-[50%] "
     >
-      <h1 className="text-3xl font-bold mb-3">Edit Profile</h1>
+      <h1 className="text-3xl font-bold my-6">Edit Profile</h1>
       <Form.Item
         name="email"
         label="E-mail"
@@ -191,21 +188,8 @@ const Profile = () => {
         </Select>
       </Form.Item>
 
-      <Form.Item
-        name="agreement"
-        valuePropName="checked"
-        rules={[
-          {
-            validator: (_, value) =>
-              value
-                ? Promise.resolve()
-                : Promise.reject(new Error("Should accept agreement")),
-          },
-        ]}
-        {...tailFormItemLayout}
-      ></Form.Item>
       <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" className="px-5 sm:px-14">
           Register
         </Button>
       </Form.Item>

@@ -23,7 +23,9 @@ function Index() {
       {data.length > 0 && (
         <>
           <DetailedViewCard value={data[0]} />
-          <TimeLine status={data[0].status} />
+          <div className="md:block hidden mx-3">
+            <TimeLine status={data[0].status} />
+          </div>
         </>
       )}
     </div>

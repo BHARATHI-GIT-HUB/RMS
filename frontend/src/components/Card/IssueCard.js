@@ -78,17 +78,18 @@ export const IssueCard = ({
   ];
 
   return (
-    <React.Fragment>
+    <>
       <Card
-        style={{
-          width: 350,
-          zIndex: 0,
-        }}
+        className="container w-full"
+        // style={{
+        //   width: 350,
+        //   zIndex: 0,
+        // }}
         cover={
           <img
             alt="example"
             src={`http://localhost:8087/images/` + photoUrl}
-            className="h-60 object-center"
+            className="max-h-60 object-center"
           />
         }
         onClick={() => {
@@ -96,18 +97,18 @@ export const IssueCard = ({
         }}
       >
         <Meta className="text-start" title={name} description={description} />
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-3 flex-wrap">
           <p>{place}</p>
-          <div>|</div>
+          <div className="hidden sm:block">|</div>
           <Button
             onClick={() => {
               handleNotApproval();
             }}
           >
-            Not Approval
+            Not Approved
           </Button>
         </div>
       </Card>
-    </React.Fragment>
+    </>
   );
 };

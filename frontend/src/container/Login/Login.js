@@ -10,7 +10,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen ">
       {isloading && <Spin size="large" />}
       {error && (
         <Alert
@@ -24,7 +24,7 @@ export const Login = () => {
       )}
       <Form
         name="normal_login"
-        className="login-form min-w-[350px] p-10 border-2 border-black-100 rounded-2xl"
+        className="login-form max-w-[250px] sm:min-w-[350px] p-5 py-9 sm:p-10 border-2 border-black-100 rounded-2xl mx-4 "
         onFinish={onFinish}
       >
         <Form.Item

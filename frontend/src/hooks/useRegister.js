@@ -1,8 +1,10 @@
+import { withSuccess } from "antd/es/modal/confirm";
 import { useState } from "react";
 
 export const useRegister = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
+  const [responseMessage, setResponseMessage] = useState("");
 
   const register = async (data, showdepartement) => {
     const role = !showdepartement ? "employee" : "department";
@@ -16,12 +18,15 @@ export const useRegister = () => {
         name,
         password,
         email: data.email,
+        phone: data.phone,
         designation: data.designation,
       };
     } else {
       body = {
         name,
         password,
+        email: data.email,
+        phone: data.phone,
         department_name: data.department_name,
       };
     }
@@ -39,13 +44,24 @@ export const useRegister = () => {
 
     const json = await response.json();
 
+    setIsLoading(false);
+
     if (!response.ok) {
-      setError(json.error);
+      if (json.error) {
+        setError(json.error);
+      } else {
+        setError(json);
+      }
     }
+
     if (response.ok) {
       localStorage.setItem("token", json.token);
-      window.location.href = "/";
+      setResponseMessage("User Created Sccuessfully");
+
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
     }
   };
-  return { register, isLoading, error };
+  return { register, isLoading, responseMessage, error };
 };

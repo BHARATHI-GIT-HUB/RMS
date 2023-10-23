@@ -3,6 +3,7 @@ import Profile from "../Form/Profile";
 import { ProfileCard } from "../Card";
 import { useGet } from "../../hooks/useGet";
 
+let user = undefined;
 export const DepartmentProfile = () => {
   const {
     getData: getUserData,
@@ -10,14 +11,14 @@ export const DepartmentProfile = () => {
     isLoading: userDataLoading,
     error: userdataError,
   } = useGet();
+  const [user, setUser] = useState();
 
-  useEffect(() => {
+  useEffect((user) => {
     async function fetch() {
-      const user = JSON.parse(localStorage.getItem("user"));
-      console.log("user :", user);
       await getUserData(`http://localhost:8087/api/department/${user.id}`);
     }
-    fetch();
+    user = JSON.parse(localStorage.getItem("user"));
+    fetch(user);
   }, []);
 
   useEffect(() => {
@@ -26,9 +27,13 @@ export const DepartmentProfile = () => {
     }
   }, [userData]);
   return (
-    <div className="flex justify-around items-start w-full">
+    <div className="flex flex-col md:flex-row justify-around items-center w-full md:h-[75vh]">
       <Profile />
-      {userData.length > 0 && <ProfileCard userData={userData} />}
+      <div className="sm:block hidden">
+        {userData.length > 0 && (
+          <ProfileCard userData={userData} userName={"user"} />
+        )}
+      </div>
     </div>
   );
 };

@@ -25,6 +25,14 @@ Department.init(
         key: "id",
       },
     },
+    phone: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     department_name: {
       type: DataTypes.STRING,
       allowNull: false,

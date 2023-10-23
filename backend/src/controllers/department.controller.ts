@@ -109,7 +109,7 @@ export class DepartmentController {
 
   async create(req: Request, res: Response) {
     try {
-      const { name, password, department_name } = req.body;
+      const { name, email, phone, password, department_name } = req.body;
 
       const existingDepartment = await Department.findOne({
         where: { department_name: department_name },
@@ -138,6 +138,8 @@ export class DepartmentController {
           {
             userId: createdUser.id,
             password: hashedPassword,
+            email: email,
+            phone: phone,
             department_name: department_name,
           },
           { transaction }

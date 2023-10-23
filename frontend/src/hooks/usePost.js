@@ -4,7 +4,7 @@ import axios from "axios";
 export const usePost = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
-  const [response, setResponse] = useState(null);
+  const [responseMessage, setResponseMessage] = useState(null);
 
   const postData = async (path, body) => {
     console.log(body);
@@ -24,9 +24,7 @@ export const usePost = () => {
       setError(json.error);
     }
     if (response.ok) {
-      console.log(json, "onpost");
-      // localStorage.setItem("token", json.token);
-      // window.location.href = "/";
+      setResponseMessage(json);
     }
   };
 
@@ -48,7 +46,7 @@ export const usePost = () => {
     axios
       .post(path, formData)
       .then((res) => {
-        setResponse(res);
+        setResponseMessage(res);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -56,5 +54,5 @@ export const usePost = () => {
         setIsLoading(false);
       });
   };
-  return { postData, postDataIssue, response, isLoading, error };
+  return { postData, postDataIssue, responseMessage, isLoading, error };
 };

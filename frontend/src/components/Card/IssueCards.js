@@ -58,7 +58,7 @@ export const IssueCards = () => {
 
   return (
     <>
-      <Content className="grid grid-cols-3 items-center gap-6 space-y-3 justify-items-center">
+      <Content className="grid sm:grid-cols-3 grid-cols-1 auto-cols-max items-center gap-6 space-y-3 justify-items-center">
         <>
           {issueData[0] &&
             issueData[0].length > 0 &&

@@ -1,18 +1,7 @@
-import {
-  AutoComplete,
-  Button,
-  Cascader,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Row,
-  Select,
-  Space,
-} from "antd";
-import React, { useState } from "react";
+import { AutoComplete, Button, Form, Input, Select, Space, Alert } from "antd";
+import React, { useEffect, useState } from "react";
 import { useRegister } from "../../hooks/useRegister";
+import Loading from "../../components/Loading";
 
 const formItemLayout = {
   labelCol: {
@@ -46,46 +35,10 @@ const tailFormItemLayout = {
 export const Register = () => {
   const [form] = Form.useForm();
   const [showdepartement, setshowdepartement] = useState(false);
-  const { register, isLoading, error } = useRegister();
+  const { register, isLoading, responseMessage, error } = useRegister();
 
   const onFinish = async (values) => {
-    // console.log("Received values of form: ", values, showdepartement);
     await register(values, showdepartement);
-
-    // const name = values.nickname;
-    // const password = values.password;
-    // const email = values.email;
-    // const role = !showdepartement ? values.designation : values.department_name;
-    // console.log(role);
-
-    // const response = await fetch("http://localhost:3005/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     name,
-    //     email,
-    //     password,
-    //     role,
-    //   }),
-    // });
-
-    // const data = await response.json();
-    // console.log(data);
-
-    // if (data.employee) {
-    //   localStorage.setItem("token", data.token);
-    //   console.log(data.employee);
-
-    //   if (data.employee.role === "ADMIN" || data.employee.role === "EMPLOYEE") {
-    //     window.location.href = "/employee";
-    //   } else if (data.employee.role === "DEPARTMENT") {
-    //     window.location.href = "/department";
-    //   }
-    // } else {
-    //   setErrorMessage("Check username and password");
-    // }
   };
 
   const handleChange = (value) => {
@@ -96,8 +49,32 @@ export const Register = () => {
     }
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen p-6">
+      {error && (
+        <Alert
+          message="Error"
+          description={error}
+          type="error"
+          showIcon
+          closable
+          className="absolute top-10 right-10"
+        />
+      )}
+      {responseMessage && (
+        <Alert
+          message="Success"
+          description={responseMessage}
+          type="success"
+          showIcon
+          closable
+          className="absolute top-10 right-10"
+        />
+      )}
       <Form
         {...formItemLayout}
         form={form}
@@ -107,17 +84,14 @@ export const Register = () => {
           residence: ["zhejiang", "hangzhou", "xihu"],
           prefix: "86",
         }}
-        className="login-form p-10 border-2 border-black-100 rounded-2xl"
-        style={{
-          maxWidth: 450,
-          minWidth: 450,
-          display: "block",
-        }}
+        className="login-form p-6 sm:p-10 border-2 border-black-100 rounded-2xl block sm:min-w-[450px]"
         scrollToFirstError
       >
-        <h1 className="font-extrabold text-3xl text-center pb-5">REGISTER</h1>
+        <h1 className="font-extrabold text-2xl sm:text-3xl text-center  mb-3 sm:mb-5">
+          REGISTER
+        </h1>
 
-        <Space wrap className="py-5">
+        <Space wrap className="py-3 sm:py-5">
           <Select
             defaultValue="Employee"
             style={{
@@ -202,6 +176,21 @@ export const Register = () => {
           <Input />
         </Form.Item>
 
+        <Form.Item
+          name="phone"
+          label="Phone"
+          tooltip="What's your Number"
+          rules={[
+            {
+              required: false,
+              message: "Please input your nickname!",
+              whitespace: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
         {showdepartement ? (
           <Form.Item
             name="department_name"
@@ -232,11 +221,7 @@ export const Register = () => {
               },
             ]}
           >
-            <AutoComplete
-              //   options={websiteOptions}
-              //   onChange={onDesignationChange}
-              placeholder="Designation"
-            >
+            <AutoComplete placeholder="Designation">
               <Input />
             </AutoComplete>
           </Form.Item>
