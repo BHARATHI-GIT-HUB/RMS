@@ -7,8 +7,6 @@ import { useGet } from "../../hooks/useGet";
 const { Header, Content, Footer, Sider } = Layout;
 
 export const Nav = ({ menu }) => {
-  console.log("Menu :", menu);
-
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const {

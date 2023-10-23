@@ -64,8 +64,7 @@ export const IssueCards = () => {
             issueData[0].length > 0 &&
             issueData[0].map((value, idx) => (
               <React.Fragment key={idx}>
-                {console.log(value.id, "is")}
-                {/* <IssueCard
+                <IssueCard
                   id={value.id}
                   name={value.title}
                   description={value.description}
@@ -74,7 +73,7 @@ export const IssueCards = () => {
                   photoUrl={value.photo}
                   showAlert={showAlert}
                   setShowAlert={setShowAlert}
-                /> */}
+                />
               </React.Fragment>
             ))}
         </>

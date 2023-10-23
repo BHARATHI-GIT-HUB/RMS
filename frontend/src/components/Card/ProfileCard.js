@@ -1,73 +1,49 @@
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import React, { useState } from "react";
-// import Update from "../../pages/register.js";
-import { Avatar, Card, Skeleton, Switch } from "antd";
-const { Meta } = Card;
-export const ProfileCard = () => {
-  const [loading, setLoading] = useState(false);
-  const [isEditVisible, setIsEditVisible] = useState(false);
+import React from "react";
 
-  const onChange = (checked) => {
-    setLoading(!checked);
-  };
-  const handleEditClick = () => {
-    setIsEditVisible(true);
-  };
+export function ProfileCard({ userData }) {
+  console.log(userData[0].department_name, "in module");
   return (
-    <div className="grid grid-flow-col justify-evenly ">
-      {/* <Switch checked={!loading} onChange={onChange} /> */}
-      {isEditVisible ? (
-        // <Update />
-        <></>
-      ) : (
-        <>
-          <Card
-            className="flex flex-col min-w-[23rem] justify-center items-center gap-4 "
-            actions={[<EditOutlined key="edit" onClick={handleEditClick} />]}
-          >
-            <Skeleton loading={loading} avatar active>
-              <Meta
-                className="pl-8"
-                avatar={
-                  <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=2" />
-                }
-              />
-              <div className="flex flex-col justify-center items-center mt-6 gap-3">
-                <h2>Card title</h2>
-                <p>This is the description</p>
+    <div class="w-full md:max-w-[250px]  bg-blue-500 dark:bg-blue-500 rounded-lg overflow-hidden shadow-2xl mt-9">
+      <div class="border-b px-3 pb-6">
+        <div class="text-center my-4 flex flex-col justify-center items-center">
+          <img
+            class="h-25 w-25 rounded-full border-2 border-white dark:border-slate-300 "
+            src="https://randomuser.me/api/portraits/women/21.jpg"
+            alt=""
+          />
+          <div class="py-2">
+            <h3 class="font-bold text-2xl text-gray-800 dark:text-white mb-1  capitalize py-1">
+              {userData[0].department_name != undefined
+                ? userData[0].department_name
+                : userData[0].designation}
+            </h3>
+            <div className="flex justify-end gap-4">
+              <div className="flex flex-col items-end text-gray-700 dark:text-gray-300 gap-3">
+                <p>Name:</p>
+                <p>Email:</p>
+                <p>Phone:</p>
               </div>
-            </Skeleton>
-          </Card>
-          <Card className="flex flex-col min-w-[23rem]  gap-4 px-0">
-            <ul className="grid grid-flow-row gap-2">
-              <li className="flex gap-20 items-start p-2 border-b-[0.3px] border-gray-200">
-                <h3>Full Name</h3>
-                <p>alpha</p>
-              </li>
-              <li className="flex gap-28 items-start p-2 border-b-[0.3px] border-gray-200">
-                <h3>Email </h3>
-                <p>alpha@gmail.com</p>
-              </li>
-              <li className="flex gap-20 items-start p-2 border-b-[0.3px] border-gray-200">
-                <h3>Password </h3>
-                <p>alpha</p>
-              </li>
-              <li className="flex gap-16 items-start p-2 border-b-[0.3px] border-gray-200">
-                <h3>Designation</h3>
-                <p>alpha</p>
-              </li>
-              <li className="flex gap-11 items-start p-2">
-                <h3>Phone Number</h3>
-                <p>xxxxxxxxxx</p>
-              </li>
-            </ul>
-          </Card>
-        </>
-      )}
+              <div className="flex flex-col items-end text-gray-700 dark:text-gray-300 gap-3">
+                <p>
+                  {userData[0].name != undefined
+                    ? userData[0].name
+                    : "user name"}
+                </p>
+                <p>
+                  {userData[0].email != undefined
+                    ? userData[0].email
+                    : "user name"}
+                </p>
+                <p>
+                  {userData[0].phone != undefined
+                    ? userData[0].name
+                    : "xxxxxxxx"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
-};
+}

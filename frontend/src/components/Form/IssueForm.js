@@ -220,9 +220,7 @@ export const IssueForm = () => {
                 label: value.department_name,
               }))
             }
-          >
-            {/* {console.log(departmentData, "inseid")} */}
-          </Select>
+          ></Select>
         </Form.Item>
 
         <Form.Item label="Status" name="status">
