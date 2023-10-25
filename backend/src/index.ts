@@ -27,7 +27,7 @@ const secretKey: Secret = process.env.SECRET_KEY || "";
 const expiresIn = "1h";
 
 app.get("/test", async (req, res) => {
-  res.status(200).json("Server is woeking");
+  res.status(200).json("Server is working");
 });
 
 app.post("/login", async (req, res) => {
@@ -77,13 +77,3 @@ app.listen(port, () => {
 });
 
 // Create a Multer upload instance with the storage options
-
-app.post("/test", upload.single("photo"), async (req, res) => {
-  console.log(req.body); // Contains text fields like title, place, etc.
-  if (!req.file) {
-    console.log("no file"); // Contains the uploaded file information
-  } else {
-    console.log(req.file); // Contains the uploaded file information
-  }
-  res.status(200).json({ message: "Data received successfully" });
-});
