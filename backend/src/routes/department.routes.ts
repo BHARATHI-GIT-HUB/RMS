@@ -17,13 +17,14 @@ export class DepartmentRoutes {
     // Get all departments
     this.router.get(
       "/",
-      // (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
+      (req, res, next) =>
+        verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
       (req: Request, res: Response) => this.controller.getAll(req, res)
     );
 
     this.router.get(
       "/departmentissues/",
-      // (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
+      (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
       (req: Request, res: Response) =>
         this.controller.getIssuesByCurrentDepartmentId(req, res)
     );
@@ -36,13 +37,15 @@ export class DepartmentRoutes {
     // Get an departments by ID
     this.router.get(
       "/:id",
-      // (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
+      (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
       (req: Request, res: Response) => this.controller.getByUserId(req, res)
     );
 
     // Create a new departments
-    this.router.post("/", (req: Request, res: Response) =>
-      this.controller.create(req, res)
+    this.router.post(
+      "/",
+      (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
+      (req: Request, res: Response) => this.controller.create(req, res)
     );
 
     // Update an employee

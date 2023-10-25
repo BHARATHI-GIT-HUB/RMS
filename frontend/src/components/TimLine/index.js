@@ -11,8 +11,6 @@ import {
 import { Timeline, Spin, Space } from "antd";
 
 export const TimeLine = ({ status, setShowDeleteAlert }) => {
-  console.log(status, setShowDeleteAlert, "Data");
-
   const componentMap = {
     CheckCircleOutlined: CheckCircleOutlined,
     ClockCircleOutlined: ClockCircleOutlined,

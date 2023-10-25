@@ -8,7 +8,6 @@ export const useRegister = () => {
 
   const register = async (data, showdepartement) => {
     const role = !showdepartement ? "employee" : "department";
-    console.log(data, role, showdepartement);
 
     const name = data.nickname;
     const password = data.password;

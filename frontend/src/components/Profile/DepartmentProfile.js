@@ -21,11 +21,6 @@ export const DepartmentProfile = () => {
     fetch(user);
   }, []);
 
-  useEffect(() => {
-    if (userData) {
-      console.log("User Data :", userData[0]);
-    }
-  }, [userData]);
   return (
     <div className="flex flex-col md:flex-row justify-around items-center w-full md:h-[75vh]">
       <Profile />

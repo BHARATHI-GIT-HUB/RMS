@@ -73,13 +73,11 @@ export const Status = ({ id }) => {
   useEffect(() => {
     try {
       if (data && data.length > 0) {
-        console.log("data on key change", status[key]);
         data[0].status.push(status[key]);
         setStatusLen(data[0].status.length);
         const body = {
           status: data[0].status,
         };
-        console.log("updagted body :", body);
         async function put() {
           await putData(`http://localhost:8087/api/issues/${id}`, body); //?for now issue 2
         }

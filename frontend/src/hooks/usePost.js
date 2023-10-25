@@ -7,13 +7,13 @@ export const usePost = () => {
   const [responseMessage, setResponseMessage] = useState(null);
 
   const postData = async (path, body) => {
-    console.log(body);
     setIsLoading(true);
-
+    const token = localStorage.getItem("token");
     const response = await fetch(path, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: body,
     });
@@ -29,8 +29,6 @@ export const usePost = () => {
   };
 
   const postDataIssue = async (path, data) => {
-    console.log(path, data);
-
     setIsLoading(true);
     const formData = new FormData();
 
@@ -43,8 +41,12 @@ export const usePost = () => {
     formData.append("status", data.status);
     formData.append("photo", data.photo[0].originFileObj);
 
+    const token = localStorage.getItem("token");
+
     axios
-      .post(path, formData)
+      .post(path, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         setResponseMessage(res);
         setIsLoading(false);

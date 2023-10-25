@@ -5,7 +5,6 @@ import { Status } from "../DropDown";
 const { Meta } = Card;
 
 export function DetailedViewCard({ value }) {
-  console.log("value :", value);
   return (
     <>
       <Card

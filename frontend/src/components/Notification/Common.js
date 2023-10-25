@@ -6,7 +6,6 @@ const Common = ({ message, type }) => {
   }, []);
   const [api, contextHolder] = notification.useNotification();
   const openNotificationWithIcon = (message, type) => {
-    console.log(message, type);
     api[type]({
       message: message,
       //   description:

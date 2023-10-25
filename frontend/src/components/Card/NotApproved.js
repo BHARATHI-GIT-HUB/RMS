@@ -9,13 +9,12 @@ function NotApproved() {
     async function fetch() {
       await getData("http://localhost:8087/api/employee");
     }
-    console.log("fetch triggered");
+
     fetch();
   }, [0]);
 
   useEffect(() => {
     if (data.length > 0) {
-      console.log("data in comp :", data);
       setRenderCount((prevCount) => prevCount + 1); // Increment the render count
     }
   }, [data.length]);
@@ -32,7 +31,6 @@ function NotApproved() {
           {data.length > 0 &&
             data[0].map((item, index) => (
               <div key={index}>
-                {console.log(item)}
                 <li key={index}>{item.someProperty}</li>
                 <h1>hello</h1>
               </div>

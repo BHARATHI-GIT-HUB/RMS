@@ -6,6 +6,7 @@ export const useDropDown = () => {
 
   const dropDown = async (data, id) => {
     setIsLoading(true);
+    const token = localStorage.getItem("token");
     const title = data.title;
     const place = data.place;
     const description = data.description;
@@ -18,6 +19,7 @@ export const useDropDown = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         title,

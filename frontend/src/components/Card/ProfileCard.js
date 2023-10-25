@@ -1,7 +1,6 @@
 import React from "react";
 
 export function ProfileCard({ userData, userName }) {
-  console.log(userData[0].department_name, userName, "in module");
   return (
     <div class="bg-blue-500 dark:bg-blue-500 rounded-lg overflow-hidden shadow-2xl px-4 mx-3">
       <div class="border-b px-2 pb-6 ">

@@ -61,7 +61,6 @@ export const IssueCard = ({
   };
 
   async function updateData(body) {
-    console.log(" body:", body);
     await putData(`http://localhost:8087/api/issues/${id}`, body); //?for now issue 2
   }
 
@@ -97,7 +96,7 @@ export const IssueCard = ({
         }}
       >
         <Meta className="text-start" title={name} description={description} />
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-3 flex-wrap">
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-3 flex-wrap text-center">
           <p>{place}</p>
           <div className="hidden sm:block">|</div>
           <Button

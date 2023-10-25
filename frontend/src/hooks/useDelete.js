@@ -5,17 +5,18 @@ export const useDelete = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [response, setResponse] = useState(null);
 
-  const DeleteData = async (path, token) => {
-    console.log(path, token);
-
+  const DeleteData = async (path) => {
     setIsLoading(true);
+    const token = localStorage.getItem("token");
 
     const response = await fetch(path, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
+    setIsLoading(false);
 
     const json = await response.json();
 
@@ -23,10 +24,7 @@ export const useDelete = () => {
       setError(json.error);
     }
     if (response.ok) {
-      //   localStorage.setItem("token", json.token);
-      console.log(json, "onput");
       setResponse(json);
-      // setResponse(json)
     }
   };
   return { DeleteData, response, isLoading, error };

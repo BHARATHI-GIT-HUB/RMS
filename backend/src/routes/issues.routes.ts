@@ -18,24 +18,22 @@ export class IssueRoutes {
     // Get all employees
     this.router.get(
       "/",
-      // (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
+      (req, res, next) => verifyToken(req, res, next, ["SUPERADMIN", "ADMIN"]),
       (req: Request, res: Response) => this.controller.getAll(req, res)
     );
 
     // Get an employee by ID
     this.router.get(
       "/:id",
-      //
-      // (req, res, next) =>
-      //   //   // verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
+      (req, res, next) =>
+        verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
       (req: Request, res: Response) => this.controller.getById(req, res)
     );
 
     this.router.get(
       "/employee/:id",
-      //
-      // (req, res, next) =>
-      //   //   // verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
+      (req, res, next) =>
+        verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
       (req: Request, res: Response) => this.controller.getByEmployeeId(req, res)
     );
 
@@ -43,24 +41,24 @@ export class IssueRoutes {
     this.router.post(
       "/",
       upload.single("photo"),
-      // (req, res, next) =>
-      // verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
+      (req, res, next) =>
+        verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
       async (req: Request, res: Response) => this.controller.create(req, res)
     );
 
     // Update an employee
     this.router.put(
       "/:id",
-      // (req, res, next) =>
-      // verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
+      (req, res, next) =>
+        verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
       (req: Request, res: Response) => this.controller.update(req, res)
     );
 
     // Delete an employee
     this.router.delete(
       "/:id",
-      // (req, res, next) =>
-      // verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
+      (req, res, next) =>
+        verifyToken(req, res, next, ["SUPERADMIN", "ADMIN", "EMPLOYEE"]),
       (req: Request, res: Response) => this.controller.delete(req, res)
     );
   }

@@ -17,8 +17,8 @@ export class EmployeeRoutes {
     // Get all employees
     this.router.get(
       "/",
-      // (req, res, next) =>
-      // verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
+      (req, res, next) =>
+        verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
       (req: Request, res: Response) => this.controller.getAll(req, res)
     );
 
@@ -30,14 +30,17 @@ export class EmployeeRoutes {
     // Get an employee by ID
     this.router.get(
       "/:id",
-      // (req, res, next) =>
-      // verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
+      (req, res, next) =>
+        verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
       (req: Request, res: Response) => this.controller.getByUserId(req, res)
     );
 
     // Create a new employee
-    this.router.post("/", (req: Request, res: Response) =>
-      this.controller.create(req, res)
+    this.router.post(
+      "/",
+      (req, res, next) =>
+        verifyToken(req, res, next, ["SUPERADMIN", "EMPLOYEE"]),
+      (req: Request, res: Response) => this.controller.create(req, res)
     );
 
     // Update an employee

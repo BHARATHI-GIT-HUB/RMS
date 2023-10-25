@@ -80,7 +80,6 @@ export const IssueForm = () => {
   const onFinish = async (values) => {
     setFormData(values);
     values.employeeId = EmpData[0].id;
-    console.log(values);
     await postDataIssue("http://localhost:8087/api/issues", values);
   };
 
@@ -95,10 +94,6 @@ export const IssueForm = () => {
     }
     fetch();
   }, [0]);
-
-  useEffect(() => {
-    console.log("departmentData :", departmentData);
-  }, [departmentData]);
 
   return (
     <div className="container w-full text-center">

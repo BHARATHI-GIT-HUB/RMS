@@ -6,14 +6,14 @@ export const usePut = () => {
   const [response, setResponse] = useState(null);
 
   const putData = async (path, body) => {
-    console.log(path, body);
-
     setIsLoading(true);
+    const token = localStorage.getItem("token");
 
     const response = await fetch(path, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });
@@ -24,10 +24,7 @@ export const usePut = () => {
       setError(json.error);
     }
     if (response.ok) {
-      //   localStorage.setItem("token", json.token);
-      console.log(json, "onput");
       setResponse(json);
-      // setResponse(json)
     }
   };
   return { putData, response, isLoading, error };

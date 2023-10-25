@@ -11,7 +11,6 @@ import { TimeLine } from "./components/TimLine";
 import { IssueCards } from "./components/Card/IssueCards";
 import DetailedView from "./components/DetailedView";
 import EmployeeStatus from "./components/TimLine/EmployeeStatus";
-// import Profile from "./components/Card/ProfileCard";
 
 const App = () => {
   return (
