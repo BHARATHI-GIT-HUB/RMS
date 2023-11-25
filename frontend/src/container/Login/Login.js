@@ -58,7 +58,12 @@ export const Login = () => {
           />
         </Form.Item>
         <Form.Item className="mb-2">
-          <a className="login-form-forgot flex justify-end text-[13px]" href="">
+          <a
+            className="login-form-forgot flex justify-end text-[13px]"
+            onClick={() => {
+              window.location.href = "/forgetPassword";
+            }}
+          >
             Forgot password ?
           </a>
         </Form.Item>

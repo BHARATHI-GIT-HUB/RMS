@@ -31,7 +31,6 @@ export class UserController {
 
   async getAll(req: Request, res: Response) {
     try {
-      console.log("here");
       const user = await User.findAll();
       res.status(200).json(user);
     } catch (error) {
@@ -56,7 +55,7 @@ export class UserController {
   async create(req: Request, res: Response) {
     try {
       const { name, email, password, designation } = req.body;
-      console.log("Data", name, email, password, designation);
+      // console.log("Data", name, email, password, designation);
       const existingEmail = await User.findOne({ where: { email: email } });
 
       if (existingEmail) {

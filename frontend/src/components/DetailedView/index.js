@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Nav } from "../NavBar";
 import { Card, Avatar, Skeleton } from "antd";
 import { Status } from "../DropDown";
-import { TimeLine } from "../TimLine";
+import { TimeLine } from "../TimeLine";
 import { useGet } from "../../hooks/useGet";
 import { useParams } from "react-router-dom";
 import { DetailedViewCard } from "../Card";

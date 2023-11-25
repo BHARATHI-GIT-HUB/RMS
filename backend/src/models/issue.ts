@@ -1,4 +1,4 @@
-import { Employee } from "./employee";
+import { Employee } from "./Employee";
 import { Department } from "./department";
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../db";

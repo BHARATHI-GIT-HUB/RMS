@@ -6,6 +6,8 @@ export class User extends Model {
   public username!: string;
   public password!: string;
   public role!: string;
+  public otp!: number; // Add this line
+  public otpExpire!: Date;
 }
 
 User.init(
@@ -21,6 +23,14 @@ User.init(
       type: DataTypes.ENUM,
       values: ["SUPERADMIN", "ADMIN", "EMPLOYEE"],
       allowNull: false,
+    },
+    otp: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    otpExpire: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
   },
   {

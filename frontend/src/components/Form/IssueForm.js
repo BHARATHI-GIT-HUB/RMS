@@ -117,7 +117,7 @@ export const IssueForm = () => {
           className="absolute top-10 right-10"
         />
       )}
-      <h1 className="text-3xl sm:text-4xl font-semibold my-10">Issue From</h1>
+      <h1 className="text-3xl sm:text-4xl font-semibold my-10">Issue Form</h1>
       <Form
         {...formItemLayout}
         form={form}

@@ -4,11 +4,15 @@ import React, { useState, useEffect } from "react";
 import { Layout, Menu, Button, theme, Alert, Space } from "antd";
 import DetailedView from "../DetailedView";
 import Loading from "../Loading";
+import io from "socket.io-client";
 
 const { Header, Sider, Content } = Layout;
 
+const socket = io.connect("http://localhost:8087");
+
 export const IssueCards = () => {
   const [showAlert, setShowAlert] = useState(false);
+  const [issueData, setIssueData] = useState("");
 
   const {
     getData: getUserData,
@@ -18,7 +22,7 @@ export const IssueCards = () => {
   } = useGet();
   const {
     getData: getIssuesById,
-    data: issueData,
+    data: issueDataFromServer,
     isloading: issuesLoading,
     error: IssueError,
   } = useGet();
@@ -32,6 +36,18 @@ export const IssueCards = () => {
 
     fetch();
   }, []);
+
+  useEffect(() => {
+    socket.on("new_issue_data", (data) => {
+      setIssueData((prevData) => [data]);
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    if (issueDataFromServer[0] && issueDataFromServer[0].length > 0) {
+      setIssueData((prevData) => [...prevData, ...issueDataFromServer]);
+    }
+  }, [issueDataFromServer]);
 
   useEffect(() => {
     async function fetch() {
@@ -48,7 +64,7 @@ export const IssueCards = () => {
     return <Loading />;
   }
 
-  if (issueData[0] && issueData[0].length <= 0) {
+  if (issueDataFromServer && issueDataFromServer[0] <= 0) {
     return (
       <h1 className="flex justify-center items-center text-xl font-normal w-full">
         No Issue Posted yet{" "}

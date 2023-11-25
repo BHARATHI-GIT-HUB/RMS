@@ -1,4 +1,3 @@
-import { Department } from "./department";
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../db";
 import { User } from "./user";
