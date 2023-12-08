@@ -13,6 +13,7 @@ const socket = io.connect("http://localhost:8087");
 export const IssueCards = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [issueData, setIssueData] = useState("");
+  const [isApproved, setApproved] = useState("");
 
   const {
     getData: getUserData,
@@ -30,8 +31,8 @@ export const IssueCards = () => {
   useEffect(() => {
     async function fetch() {
       const user = localStorage.getItem("user");
-      const data = JSON.parse(user);
-      await getUserData(`http://localhost:8087/api/department/${data.id}`);
+      const userData = JSON.parse(user);
+      await getUserData(`http://localhost:8087/api/department/${userData.id}`);
     }
 
     fetch();
@@ -64,7 +65,7 @@ export const IssueCards = () => {
     return <Loading />;
   }
 
-  if (issueDataFromServer && issueDataFromServer[0] <= 0) {
+  if (issueDataFromServer.length === 1 && issueData.length === 0) {
     return (
       <h1 className="flex justify-center items-center text-xl font-normal w-full">
         No Issue Posted yet{" "}
@@ -89,6 +90,8 @@ export const IssueCards = () => {
                   photoUrl={value.photo}
                   showAlert={showAlert}
                   setShowAlert={setShowAlert}
+                  isApproved={isApproved}
+                  setApproved={setApproved}
                 />
               </React.Fragment>
             ))}

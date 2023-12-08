@@ -236,7 +236,11 @@ export const IssueForm = () => {
           className="flex justify-center items-center mt-10"
         >
           {/* <Primary text="Register" onClick={onFinish} /> */}
-          <Button type="primary" htmlType="submit" className="px-5 sm:px-20">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="px-5 sm:px-20 !bg-[#1677ff] !hover-bg-[#fff]"
+          >
             Submit
           </Button>
         </Form.Item>

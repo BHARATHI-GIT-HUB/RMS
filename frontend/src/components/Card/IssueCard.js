@@ -20,6 +20,8 @@ export const IssueCard = ({
   setShowAlert,
   isCloseIssue,
   setIsCloseIssue,
+  isApproved,
+  setApproved,
 }) => {
   const { getData, data, isLoading, error } = useGet();
   const navigate = useNavigate();
@@ -46,6 +48,7 @@ export const IssueCard = ({
       };
       await updateData(body);
     }
+    setApproved(false);
   };
 
   const handleClick = () => {

@@ -65,6 +65,10 @@ function EmployeeStatus() {
   useEffect(() => {
     socket.on("updated_issue_data", (data) => {
       setIssueData((prevData) => [[data]]);
+      console.log(
+        data,
+        data.status.some((item) => item?.children?.includes("Closed"))
+      );
     });
   }, [socket]);
 
@@ -72,7 +76,25 @@ function EmployeeStatus() {
     if (issueDataFromServer[0] && issueDataFromServer[0].length > 0) {
       setIssueData((prevData) => [...prevData, ...issueDataFromServer]);
     }
+    // console.log(issueData[0]);
 
+    // if (
+    //   issueData[0] &&
+    //   issueData[0].length > 0 &&
+    //   issueData[0][0].status.some((item) => item?.children?.includes("Closed"))
+    // ) {
+    //   setShowDeleteAlert(true);
+    // }
+  }, [issueDataFromServer]);
+
+  useEffect(() => {
+    if (issueData[0]) {
+      console.log(
+        issueData[0][0].status.some((item) =>
+          item?.children?.includes("Closed")
+        )
+      );
+    }
     if (
       issueData[0] &&
       issueData[0].length > 0 &&
@@ -80,7 +102,7 @@ function EmployeeStatus() {
     ) {
       setShowDeleteAlert(true);
     }
-  }, [issueDataFromServer]);
+  }, [issueData]);
 
   const handleDelete = async () => {
     setShowDeleteAlert(false);

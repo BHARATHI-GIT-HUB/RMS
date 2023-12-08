@@ -227,15 +227,15 @@ export const Register = () => {
           </Form.Item>
         )}
 
-        <Form.Item {...tailFormItemLayout}>
-          <Button
-            htmlType="submit"
-            type="primary"
-            className="!bg-blue-400 w-full"
-          >
-            Register
-          </Button>
-        </Form.Item>
+        {/* <Form.Item {...tailFormItemLayout}> */}
+        <Button
+          htmlType="submit"
+          type="primary"
+          className="!bg-blue-400 w-full"
+        >
+          Register
+        </Button>
+        {/* </Form.Item> */}
       </Form>
     </div>
   );
