@@ -2,7 +2,6 @@ import { IssueCard } from "./IssueCard";
 import { useGet } from "../../hooks/useGet";
 import React, { useState, useEffect } from "react";
 import { Layout, Menu, Button, theme, Alert, Space } from "antd";
-import DetailedView from "../DetailedView";
 import Loading from "../Loading";
 import io from "socket.io-client";
 

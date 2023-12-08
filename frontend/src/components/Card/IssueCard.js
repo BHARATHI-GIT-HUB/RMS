@@ -20,18 +20,11 @@ export const IssueCard = ({
   setShowAlert,
   isCloseIssue,
   setIsCloseIssue,
-  isApproved,
-  setApproved,
 }) => {
   const { getData, data, isLoading, error } = useGet();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function fetch() {
-      await getData(`http://localhost:8087/api/issues/${id}`);
-    }
-    fetch();
-  }, [0]);
+  const [isApproved, setisApproved] = useState(false);
 
   const {
     putData,
@@ -40,15 +33,59 @@ export const IssueCard = ({
     error: putError,
   } = usePut();
 
-  const handleNotApproval = async () => {
-    if (data && data.length > 0) {
-      data[0].status.push(status[1]);
-      const body = {
-        status: data[0].status,
-      };
-      await updateData(body);
+  useEffect(() => {
+    async function fetch() {
+      await getData(`http://localhost:8087/api/issues/${id}`);
     }
-    setApproved(false);
+    fetch();
+  }, []);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      let approved = data[0].status.some((item) => {
+        if (item != null) {
+          console.log(
+            item.children.split(" ")[0],
+            item.children.split(" ")[0] === "Approved"
+          );
+          return item.children.split(" ")[0] === "Approved";
+        }
+      });
+      setisApproved(approved);
+      console.log(isApproved, "ins");
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setisApproved(isApproved);
+    console.log(isApproved);
+  }, [isApproved]);
+
+  const handleNotApproval = async () => {
+    try {
+      if (data && data.length > 0) {
+        // const result = await getData(`http://localhost:8087/api/issues/${id}`);
+        // const newData = result.data; // Assuming your data is available in a 'data' property
+
+        let isAlreadyExist = data[0].status.some((item) => {
+          if (item != null) {
+            return item.children.split(" ")[0] === "Not";
+          }
+        });
+
+        if (!isAlreadyExist) {
+          data[0].status.push(status[1]);
+          const body = {
+            status: data[0].status,
+          };
+          await updateData(body);
+        }
+
+        setisApproved(true);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   const handleClick = () => {
@@ -57,6 +94,7 @@ export const IssueCard = ({
       const body = {
         status: data[0].status,
       };
+      console.log(body);
       updateData(body);
     }
     navigate(`/department/detailedview/${id}`);
@@ -64,7 +102,7 @@ export const IssueCard = ({
   };
 
   async function updateData(body) {
-    await putData(`http://localhost:8087/api/issues/${id}`, body); //?for now issue 2
+    await putData(`http://localhost:8087/api/issues/${id}`, body);
   }
 
   const status = [
@@ -106,6 +144,7 @@ export const IssueCard = ({
             onClick={() => {
               handleNotApproval();
             }}
+            disabled={isApproved}
           >
             Not Approved
           </Button>
